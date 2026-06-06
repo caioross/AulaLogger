@@ -135,3 +135,6 @@ build.log
 # Dependência C++ vendorizada (clone próprio do whisper.cpp) — não versionar aqui.
 # Idealmente vira submódulo ou é baixada no build.
 app/app/src/main/cpp/whisper.cpp/
+
+# Ferramentas internas
+.claude/
