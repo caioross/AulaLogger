@@ -52,7 +52,7 @@ jobs:
           cache: npm
           cache-dependency-path: app/package-lock.json
 
-      - uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v4
 
       - name: Install npm deps
         working-directory: app
