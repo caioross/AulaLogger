@@ -1,0 +1,40 @@
+version: 2
+updates:
+  # App
+  - package-ecosystem: npm
+    directory: /app
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels: [dependencies, app]
+    groups:
+      expo:
+        patterns: ['expo*']
+      react:
+        patterns: ['react*', 'react-native*']
+      types:
+        patterns: ['@types/*']
+
+  # Site
+  - package-ecosystem: npm
+    directory: /site
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 3
+    labels: [dependencies, site]
+
+  # Gradle (módulo nativo)
+  - package-ecosystem: gradle
+    directory: /app/modules/aulalogger-native/android
+    schedule:
+      interval: monthly
+    labels: [dependencies, native]
+
+  # GitHub Actions
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    labels: [dependencies, ci]

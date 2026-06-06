@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AulaLogger</string>
+
+    <!-- Ações principais -->
+    <string name="action_record">GRAVAR AULA</string>
+    <string name="action_stop">PARAR</string>
+    <string name="action_pause">PAUSAR</string>
+    <string name="action_resume">RETOMAR</string>
+
+    <!-- Widget -->
+    <string name="widget_action_record">GRAVAR</string>
+    <string name="widget_action_stop">PARAR</string>
+    <string name="widget_action_pause">❚❚</string>
+    <string name="widget_action_resume">▶</string>
+    <string name="widget_status_ready">Pronto</string>
+    <string name="widget_status_recording">Gravando…</string>
+    <string name="widget_status_paused">Pausado</string>
+
+    <!-- Estado da gravação -->
+    <string name="status_recording">Gravando…</string>
+    <string name="status_paused">Pausado</string>
+    <string name="status_idle">Pronto</string>
+    <string name="status_transcribing">Transcrevendo…</string>
+
+    <!-- Home -->
+    <string name="screen_home">Aulas</string>
+    <string name="empty_lessons">Nenhuma aula gravada ainda.\nToque o botão para começar.</string>
+
+    <!-- Locutores (para diarização heurística) -->
+    <string name="speaker_a">Locutor A</string>
+    <string name="speaker_b">Locutor B</string>
+
+    <!-- Notificações -->
+    <string name="notification_channel_recording">Gravação em andamento</string>
+    <string name="notification_channel_recording_desc">Mantém a gravação ativa quando o app está em segundo plano</string>
+    <string name="notification_channel_transcription">Transcrição</string>
+    <string name="notification_channel_transcription_desc">Progresso da transcrição em background</string>
+
+    <!-- Permissões / pré-requisitos -->
+    <string name="permission_mic_required">É necessário permitir o microfone para gravar a aula.</string>
+    <string name="permission_grant">Conceder permissão</string>
+    <string name="transcript_empty">Transcrição ainda não foi gerada.</string>
+    <string name="transcribe_now">Transcrever agora</string>
+
+    <!-- Warnings -->
+    <string name="warn_low_battery">Bateria baixa — recomendado conectar o carregador antes de uma aula longa.</string>
+    <string name="warn_low_storage">Espaço em disco baixo — pode interromper a gravação.</string>
+    <string name="warn_mic_silent">Mic não está captando som há %1$d segundos. Verifique se algum app está usando o microfone.</string>
+    <string name="warn_audio_device_changed">Dispositivo de áudio mudou — a gravação tentará continuar.</string>
+</resources>

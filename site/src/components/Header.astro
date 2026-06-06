@@ -1,0 +1,49 @@
+---
+const links = [
+  { href: '/', label: 'Início' },
+  { href: '/download', label: 'Baixar' },
+  { href: '/docs', label: 'Documentação' },
+  { href: '/changelog', label: 'Changelog' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="border-b border-bg-card bg-bg-primary/80 backdrop-blur-md sticky top-0 z-50">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href="/" class="flex items-center gap-2 text-white hover:text-accent transition">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6">
+        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" />
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+        <line x1="12" y1="19" x2="12" y2="23" />
+      </svg>
+      <span class="font-bold text-lg">AulaLogger</span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class:list={[
+              'text-sm transition hover:text-accent',
+              currentPath === l.href ? 'text-accent' : 'text-white/70',
+            ]}
+          >
+            {l.label}
+          </a>
+        ))
+      }
+      <a
+        href="https://github.com/<usuario>/aulalogger"
+        class="text-sm text-white/70 hover:text-accent transition"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub
+      </a>
+    </nav>
+
+    <a href="/download" class="btn-primary text-sm">Baixar</a>
+  </div>
+</header>

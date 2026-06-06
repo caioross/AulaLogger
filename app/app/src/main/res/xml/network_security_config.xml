@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  NEW-012 / SEC-003: política explícita.
+  O app só faz HTTPS para download de modelo (Hugging Face) e APIs IA opcionais
+  (Anthropic, OpenAI, Google AI Studio, OpenRouter). Cleartext bloqueado em todos
+  os domínios — uma declaração explícita facilita auditoria e protege contra
+  configurações futuras acidentais.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

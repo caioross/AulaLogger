@@ -1,0 +1,80 @@
+---
+import Base from '@/layouts/Base.astro';
+const updated = '03 de maio de 2026';
+---
+
+<Base title="Privacidade — AulaLogger">
+  <article class="container-prose prose prose-invert prose-lg py-16">
+    <h1>Política de Privacidade</h1>
+    <p class="text-white/60">Última atualização: {updated}</p>
+
+    <h2>Resumo</h2>
+    <p>
+      O AulaLogger <strong>não coleta nenhum dado seu</strong>. Tudo fica no seu
+      celular.
+    </p>
+
+    <h2>O que o app armazena</h2>
+    <ul>
+      <li>Áudio gravado: no seu celular, em pasta privada do app</li>
+      <li>Transcrições: no seu celular</li>
+      <li>Análises: no seu celular</li>
+      <li>Configurações: no seu celular, criptografadas quando sensíveis</li>
+    </ul>
+
+    <h2>O que sai do seu celular</h2>
+    <p><strong>Nada, por padrão.</strong></p>
+    <p>Se você ativar a "IA em nuvem" nas configurações:</p>
+    <ul>
+      <li>
+        Apenas o <strong>texto</strong> da transcrição é enviado ao provedor que
+        você escolheu (Claude, OpenAI ou Gemini).
+      </li>
+      <li>O áudio nunca sai.</li>
+      <li>
+        Você usa sua própria conta no provedor — o AulaLogger não tem servidor
+        próprio.
+      </li>
+    </ul>
+
+    <h2>Telemetria</h2>
+    <p>
+      Zero. O app não tem analytics, crash reporting ou qualquer envio.
+    </p>
+
+    <h2>Cookies do site</h2>
+    <p>
+      O site (aulalogger.com.br) não usa cookies de terceiros nem analytics.
+    </p>
+
+    <h2>Direitos</h2>
+    <ul>
+      <li><strong>Apagar tudo:</strong> Configurações → Privacidade → "Apagar todos os dados"</li>
+      <li>
+        <strong>Exportar tudo:</strong> Configurações → Storage → "Exportar todas as aulas"
+      </li>
+    </ul>
+
+    <h2>Sua responsabilidade ao gravar aulas</h2>
+    <p>
+      A LGPD se aplica a você quando você grava aulas com alunos. Boas práticas:
+    </p>
+    <ol>
+      <li>Avise os alunos que a aula está sendo gravada.</li>
+      <li>Tenha base legal (consentimento, contrato educacional).</li>
+      <li>Use os dados só para o que comunicou.</li>
+      <li>Permita exclusão se aluno solicitar.</li>
+      <li>Cuidado com dados sensíveis mencionados em aula.</li>
+      <li>Compartilhe transcrições de forma segura.</li>
+    </ol>
+    <p class="text-white/60 italic">
+      Este texto não é orientação jurídica. Em dúvida, consulte um advogado
+      especializado em LGPD/educação.
+    </p>
+
+    <h2>Contato</h2>
+    <p>
+      Para questões sobre privacidade, abra uma issue no GitHub do projeto.
+    </p>
+  </article>
+</Base>

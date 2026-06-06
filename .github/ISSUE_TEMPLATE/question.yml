@@ -1,0 +1,22 @@
+name: ❓ Pergunta
+description: Pergunta sobre o app, instalação ou uso
+labels: [question]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Para perguntas mais abertas e discussões, considere usar
+        [GitHub Discussions](../discussions) em vez de Issues.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Sua pergunta
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto
+      description: O que você já tentou? O que leu na documentação?

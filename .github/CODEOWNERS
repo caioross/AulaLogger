@@ -1,0 +1,10 @@
+# Cada PR exige aprovação dos donos das áreas modificadas.
+# Atualize com seu username GitHub depois de criar o repo.
+
+* @<usuario>
+
+# Áreas críticas exigem revisão extra (futuro: adicionar mais maintainers)
+/app/modules/aulalogger-native/  @<usuario>
+/.github/                        @<usuario>
+/SECURITY.md                     @<usuario>
+/LICENSE                         @<usuario>

@@ -1,0 +1,147 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const features = [
+  {
+    title: 'Gravação que não falha',
+    description:
+      'Aulas de 4 horas ou mais, com a tela apagada, em qualquer celular. O foreground service nativo garante que nem o sistema, nem o app, vão interromper sua sessão.',
+  },
+  {
+    title: 'Transcrição hiper-detalhada',
+    description:
+      'Whisper rodando direto no seu celular. Português brasileiro técnico, com vocabulário customizável, timestamps por palavra e busca instantânea.',
+  },
+  {
+    title: 'Sabe quem falou',
+    description:
+      'Diarização automática separa você dos seus alunos. Cadastre sua voz uma vez e o app reconhece em todas as aulas. Edite as marcações se quiser.',
+  },
+  {
+    title: 'Análise pedagógica com IA',
+    description:
+      'Resumos, tópicos, glossário, métricas de ritmo e silêncio, perguntas dos alunos, alertas em tempo real — tudo gerado pela IA local. Cloud é opcional.',
+  },
+  {
+    title: '100% offline e privado',
+    description:
+      'Áudio nunca sai do seu celular. Transcrição nunca sai do seu celular. Modo avião funciona perfeitamente. Você decide o que sair, quando.',
+  },
+  {
+    title: 'Open source, sem ads',
+    description:
+      'GPL-3.0. Sem coleta de dados. Sem telemetria. Sem propaganda. Ferramenta de verdade, não produto extraindo seus dados.',
+  },
+];
+
+const comparisonRows = [
+  { feature: '100% offline', aulalogger: '✅', otter: '❌', recorder: '✅' },
+  { feature: 'Áudio de 4h+', aulalogger: '✅', otter: '✅', recorder: '⚠️' },
+  { feature: 'Transcrição', aulalogger: '✅', otter: '✅', recorder: '❌' },
+  { feature: 'Identifica quem falou', aulalogger: '✅', otter: '✅', recorder: '❌' },
+  { feature: 'Análise pedagógica', aulalogger: '✅', otter: '⚠️', recorder: '❌' },
+  { feature: 'Privacidade do aluno', aulalogger: '✅', otter: '❌', recorder: '✅' },
+  { feature: 'Open source', aulalogger: '✅', otter: '❌', recorder: '❌' },
+  { feature: 'Grátis sempre', aulalogger: '✅', otter: '⚠️', recorder: '⚠️' },
+];
+---
+
+<Base title="AulaLogger — gravação e análise de aulas, no seu celular">
+  <!-- Hero -->
+  <section class="px-6 pt-20 pb-24 text-center">
+    <h1 class="text-5xl md:text-7xl font-bold tracking-tight">AulaLogger</h1>
+    <p class="mt-6 text-xl md:text-2xl text-white/80 max-w-2xl mx-auto">
+      Grave, transcreva e analise suas aulas.<br />
+      <span class="text-white/60">Tudo no seu celular. Sem nuvem.</span>
+    </p>
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+      <a href="/download" class="btn-primary">Baixar para Android</a>
+      <a
+        href="https://github.com/<usuario>/aulalogger"
+        class="btn-secondary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Ver no GitHub
+      </a>
+    </div>
+    <p class="mt-6 text-sm text-white/40">
+      Para Android 10+ · 100% open source · Sem coleta de dados
+    </p>
+  </section>
+
+  <!-- Features -->
+  <section class="px-6 py-16 bg-bg-secondary">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">O que ele faz</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          features.map((f) => (
+            <div class="rounded-xl bg-bg-card p-6">
+              <h3 class="font-semibold text-lg mb-2">{f.title}</h3>
+              <p class="text-white/70 leading-relaxed">{f.description}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Para quem é -->
+  <section class="px-6 py-16">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-8">Para quem é</h2>
+      <p class="text-xl text-white/80 leading-relaxed">
+        Professores presenciais. Instrutores online. Tutores particulares.
+        Palestrantes. Coaches. Qualquer pessoa que fala muito e quer registro
+        inteligente do que ensinou.
+      </p>
+    </div>
+  </section>
+
+  <!-- Comparação -->
+  <section class="px-6 py-16 bg-bg-secondary">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">
+        Por que não outro app?
+      </h2>
+      <p class="text-center text-white/60 mb-12">
+        Honesta comparação com alternativas comuns.
+      </p>
+      <div class="overflow-x-auto rounded-xl bg-bg-card">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left p-4 font-semibold">Recurso</th>
+              <th class="p-4 font-semibold text-accent">AulaLogger</th>
+              <th class="p-4 font-semibold text-white/60">Otter / Fireflies</th>
+              <th class="p-4 font-semibold text-white/60">Gravador comum</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              comparisonRows.map((r) => (
+                <tr class="border-b border-white/5 last:border-0">
+                  <td class="p-4 text-white/80">{r.feature}</td>
+                  <td class="p-4 text-center text-lg">{r.aulalogger}</td>
+                  <td class="p-4 text-center text-lg">{r.otter}</td>
+                  <td class="p-4 text-center text-lg">{r.recorder}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA final -->
+  <section class="px-6 py-24 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4">Pronto para começar?</h2>
+    <p class="text-white/60 mb-8 max-w-xl mx-auto">
+      Baixe o APK, conceda permissão de microfone, e grave sua próxima aula
+      sem se preocupar com nada.
+    </p>
+    <a href="/download" class="btn-primary">Baixar agora</a>
+  </section>
+</Base>

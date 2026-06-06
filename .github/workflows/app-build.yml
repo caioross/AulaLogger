@@ -1,0 +1,63 @@
+name: app-build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/**'
+      - '.github/workflows/app-build.yml'
+  pull_request:
+    paths:
+      - 'app/**'
+      - '.github/workflows/app-build.yml'
+
+concurrency:
+  group: app-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build APK debug
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install npm deps
+        working-directory: app
+        run: npm ci
+
+      - name: Expo prebuild
+        working-directory: app
+        run: npx expo prebuild --platform android --no-install
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('app/android/**/*.gradle*', 'app/android/**/gradle-wrapper.properties') }}
+
+      - name: Build debug APK
+        working-directory: app/android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: aulalogger-debug-${{ github.sha }}
+          path: app/android/app/build/outputs/apk/debug/*.apk
+          retention-days: 14

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- NEW-009: cores dark, sobrescrevem values/colors.xml em night mode. -->
+    <color name="bg_primary">#0A0A0A</color>
+    <color name="bg_secondary">#161616</color>
+    <color name="bg_card">#222222</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0B0B0</color>
+    <color name="accent">#818CF8</color>
+    <color name="danger">#EF4444</color>
+</resources>

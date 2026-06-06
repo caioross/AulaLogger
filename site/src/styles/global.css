@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-bg-primary text-white;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply min-h-screen;
+  }
+  ::selection {
+    @apply bg-accent text-white;
+  }
+}
+
+@layer components {
+  .container-prose {
+    @apply mx-auto max-w-prose px-6;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-accent px-6 py-3 font-semibold text-white transition hover:bg-accent-hover;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg border border-bg-card bg-bg-secondary px-6 py-3 font-semibold text-white transition hover:bg-bg-card;
+  }
+}

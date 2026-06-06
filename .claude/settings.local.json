@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew assembleRelease)",
+      "Bash(./gradlew --stop)",
+      "PowerShell(Get-Process | Where-Object { $_.ProcessName -match \"java|gradle|kotlin\" } | Select-Object Id, ProcessName, MainWindowTitle | Format-Table)",
+      "Bash(ls \"E:\\\\Projetos\\\\[APLICATIVO] AulaLogger\")"
+    ]
+  }
+}

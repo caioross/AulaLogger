@@ -1,0 +1,42 @@
+name: 💡 Feature request
+description: Sugerir uma funcionalidade
+labels: [enhancement, triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Qual problema você está tentando resolver?
+      description: Descreva o caso de uso e por que isso importa.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solução que você imagina
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+      description: Outras formas de resolver o mesmo problema, e por que essa parece melhor.
+
+  - type: textarea
+    id: who-benefits
+    attributes:
+      label: Quem mais se beneficia?
+      description: Apenas você? Outros instrutores? Cenários específicos?
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridade percebida
+      options:
+        - 'Crítico (não consigo usar o app sem isso)'
+        - 'Alto (limita muito o uso)'
+        - 'Médio (seria uma melhoria significativa)'
+        - 'Baixo (nice-to-have)'
+    validations:
+      required: true

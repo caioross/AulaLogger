@@ -1,0 +1,70 @@
+name: 🐛 Bug report
+description: Reportar um bug no app ou no site
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por reportar um bug. Quanto mais detalhes, mais rápido conseguimos resolver.
+
+        ⚠️ **Não inclua áudio ou texto de aulas suas.** Apenas logs técnicos.
+
+  - type: input
+    id: version
+    attributes:
+      label: Versão do app
+      description: Configurações > Sobre
+      placeholder: ex. 1.0.2
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Modelo do celular
+      placeholder: ex. Samsung Galaxy A54, Android 14
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: O que aconteceu?
+      description: Descreva o problema em detalhes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: O que era esperado?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos para reproduzir
+      placeholder: |
+        1. Abrir o app
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs ou exportação de diagnóstico
+      description: Use Configurações > Sobre > Exportar diagnóstico (não inclui áudio nem texto de aulas).
+      render: shell
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmação
+      options:
+        - label: Verifiquei que não há issue aberta para o mesmo bug
+          required: true
+        - label: Não estou incluindo áudio ou texto de aulas reais nos logs
+          required: true

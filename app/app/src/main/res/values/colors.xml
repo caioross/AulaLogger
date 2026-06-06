@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- NEW-009: valores LIGHT por padrão; values-night/ sobrescreve em modo escuro.
+         Antes era tudo dark, causando flash escuro ao abrir o app em modo claro
+         (windowBackground = @color/bg_primary). -->
+    <color name="bg_primary">#FAFAFA</color>
+    <color name="bg_secondary">#FFFFFF</color>
+    <color name="bg_card">#F3F4F6</color>
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="accent">#6366F1</color>
+    <color name="danger">#EF4444</color>
+</resources>

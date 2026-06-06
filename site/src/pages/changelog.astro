@@ -1,0 +1,33 @@
+---
+import Base from '@/layouts/Base.astro';
+---
+
+<Base title="Changelog — AulaLogger">
+  <article class="container-prose prose prose-invert prose-lg py-16">
+    <h1>Changelog</h1>
+    <p class="text-white/60">
+      Histórico de mudanças do AulaLogger. Versionamento segue
+      <a href="https://semver.org/lang/pt-BR/" target="_blank">Semantic Versioning</a>.
+    </p>
+
+    <h2>v0.0.1 — em desenvolvimento</h2>
+    <p>Setup inicial do projeto:</p>
+    <ul>
+      <li>Plano de desenvolvimento completo (16 documentos)</li>
+      <li>Esqueleto do app Android (Expo + RN + Kotlin nativo)</li>
+      <li>Esqueleto do site (Astro + Tailwind)</li>
+      <li>Foreground Service de gravação funcional (chunking + WAV)</li>
+      <li>Eventos JS↔nativo (chunkSaved, tick, error)</li>
+      <li>CI/CD (lint, build, deploy do site)</li>
+    </ul>
+
+    <h2>Próximos releases</h2>
+    <p>Conforme o roadmap:</p>
+    <ul>
+      <li><strong>v1.0</strong> — Gravação confiável (4h+, recovery, OEMs agressivos)</li>
+      <li><strong>v1.1</strong> — Transcrição on-device com Whisper</li>
+      <li><strong>v1.2</strong> — Diarização (separar professor de alunos)</li>
+      <li><strong>v1.3</strong> — Análise pedagógica com IA local + cloud opcional</li>
+    </ul>
+  </article>
+</Base>

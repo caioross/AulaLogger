@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- /data/data/<pkg>/files/recordings/*.wav -->
+    <files-path name="recordings" path="recordings/" />
+    <!-- /data/data/<pkg>/files/models -->
+    <files-path name="models" path="models/" />
+</paths>

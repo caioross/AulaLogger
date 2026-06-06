@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialLayout="@layout/widget_aulalogger"
+    android:minWidth="160dp"
+    android:minHeight="60dp"
+    android:resizeMode="horizontal|vertical"
+    android:targetCellWidth="2"
+    android:targetCellHeight="1"
+    android:widgetCategory="home_screen"
+    android:updatePeriodMillis="0"
+    android:previewImage="@mipmap/ic_launcher"
+    android:description="@string/app_name" />

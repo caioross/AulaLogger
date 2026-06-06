@@ -1,0 +1,121 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const latestVersion = '0.0.1';
+const releaseDate = '03/05/2026';
+const apkSize = '~ em desenvolvimento';
+---
+
+<Base title="Baixar AulaLogger — Android">
+  <section class="px-6 py-16 max-w-3xl mx-auto">
+    <h1 class="text-4xl md:text-5xl font-bold mb-6">Baixar AulaLogger</h1>
+    <p class="text-white/60 mb-8">
+      Para Android 10 ou superior · 4 GB de RAM ou mais (recomendado para IA local)
+    </p>
+
+    <!-- Versão estável -->
+    <div class="rounded-xl border border-bg-card bg-bg-secondary p-8 mb-6">
+      <div class="flex items-start justify-between flex-wrap gap-4 mb-4">
+        <div>
+          <h2 class="text-2xl font-bold mb-1">Versão estável</h2>
+          <p class="text-white/60 text-sm">
+            v{latestVersion} · liberada em {releaseDate} · {apkSize}
+          </p>
+        </div>
+        <span
+          class="rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-accent"
+        >
+          Em desenvolvimento
+        </span>
+      </div>
+      <p class="text-white/70 mb-6">
+        O APK estável da v1.0 estará disponível aqui assim que o desenvolvimento terminar
+        a fase de gravação confiável (estimativa: ~8 semanas).
+      </p>
+      <button
+        class="btn-primary opacity-50 cursor-not-allowed"
+        disabled
+      >
+        Baixar APK (em breve)
+      </button>
+    </div>
+
+    <!-- Outras formas -->
+    <h2 class="text-2xl font-bold mb-4 mt-12">Outras formas de obter</h2>
+
+    <div class="space-y-4">
+      <a
+        href="https://github.com/<usuario>/aulalogger/releases"
+        class="block rounded-xl border border-bg-card bg-bg-secondary p-6 hover:border-accent transition"
+      >
+        <h3 class="font-semibold text-lg flex items-center gap-2">
+          <span>🐙</span> GitHub Releases
+        </h3>
+        <p class="text-white/60 text-sm mt-2">
+          Histórico completo de versões, incluindo betas e releases anteriores.
+        </p>
+      </a>
+
+      <div class="block rounded-xl border border-bg-card bg-bg-secondary p-6 opacity-60">
+        <h3 class="font-semibold text-lg flex items-center gap-2">
+          <span>📦</span> F-Droid
+        </h3>
+        <p class="text-white/60 text-sm mt-2">
+          Atualizações automáticas via loja open-source. Disponível após v1.2.
+        </p>
+      </div>
+    </div>
+
+    <!-- Como instalar APK -->
+    <div class="mt-16">
+      <h2 class="text-2xl font-bold mb-6">Como instalar APK no Android</h2>
+      <ol class="space-y-4 text-white/80">
+        <li class="flex gap-4">
+          <span class="flex-shrink-0 rounded-full bg-accent/20 text-accent w-8 h-8 flex items-center justify-center font-bold">
+            1
+          </span>
+          <span>Baixe o APK do botão acima.</span>
+        </li>
+        <li class="flex gap-4">
+          <span class="flex-shrink-0 rounded-full bg-accent/20 text-accent w-8 h-8 flex items-center justify-center font-bold">
+            2
+          </span>
+          <span>Abra "Configurações" do Android, vá em "Apps" ou "Segurança".</span>
+        </li>
+        <li class="flex gap-4">
+          <span class="flex-shrink-0 rounded-full bg-accent/20 text-accent w-8 h-8 flex items-center justify-center font-bold">
+            3
+          </span>
+          <span>
+            Procure "Instalar apps desconhecidos" e habilite para o navegador
+            que você usou para baixar.
+          </span>
+        </li>
+        <li class="flex gap-4">
+          <span class="flex-shrink-0 rounded-full bg-accent/20 text-accent w-8 h-8 flex items-center justify-center font-bold">
+            4
+          </span>
+          <span>
+            Abra o arquivo APK pela notificação de download ou pelo gerenciador
+            de arquivos.
+          </span>
+        </li>
+        <li class="flex gap-4">
+          <span class="flex-shrink-0 rounded-full bg-accent/20 text-accent w-8 h-8 flex items-center justify-center font-bold">
+            5
+          </span>
+          <span>Aceite as permissões e pronto.</span>
+        </li>
+      </ol>
+
+      <div class="mt-8 rounded-xl border border-warning/30 bg-warning/5 p-6">
+        <p class="text-sm text-white/80">
+          <strong class="text-warning">⚠️ Permissões importantes:</strong> a primeira vez que abrir,
+          autorize <strong>microfone</strong>, <strong>notificações</strong> e
+          <strong>ignorar otimização de bateria</strong>. Sem isso, gravações
+          longas podem ser interrompidas pelo sistema.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

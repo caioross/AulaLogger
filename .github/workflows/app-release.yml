@@ -1,0 +1,86 @@
+name: app-release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+      - 'v*.*.*-*'
+
+jobs:
+  release:
+    name: Build assinado e publicar release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install npm deps
+        working-directory: app
+        run: npm ci
+
+      - name: Expo prebuild
+        working-directory: app
+        run: npx expo prebuild --platform android --no-install
+
+      - name: Decode keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::error::KEYSTORE_BASE64 secret não configurado. Crie a chave seguindo BUILD.md."
+            exit 1
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > app/android/app/release.jks
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('app/android/**/*.gradle*', 'app/android/**/gradle-wrapper.properties') }}
+
+      - name: Build release APK assinado
+        working-directory: app/android
+        env:
+          AULALOGGER_KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          AULALOGGER_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          AULALOGGER_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Generate SHA-256
+        run: |
+          cd app/android/app/build/outputs/apk/release
+          for f in *.apk; do
+            sha256sum "$f" | tee "$f.sha256"
+          done
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            app/android/app/build/outputs/apk/release/*.apk
+            app/android/app/build/outputs/apk/release/*.sha256
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref, '-') }}
+
+      - name: Cleanup keystore
+        if: always()
+        run: rm -f app/android/app/release.jks
