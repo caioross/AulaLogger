@@ -123,6 +123,9 @@ site/.wrangler/
 # APKs grandes pertencem ao GitHub Releases, não ao histórico do git.
 # ============================================================================
 *.apk
+# Exceção: APKs servidos pelo site precisam ir no deploy (Cloudflare Pages).
+!site/public/apk/
+!site/public/apk/*.apk
 releases/
 app/app/build/
 app/build/
@@ -138,3 +141,6 @@ app/app/src/main/cpp/whisper.cpp/
 
 # Ferramentas internas
 .claude/
+
+# APK debug grande demais para o GitHub (>100MB) - servir via outro meio
+site/public/apk/*debug*.apk

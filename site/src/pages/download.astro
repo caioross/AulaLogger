@@ -1,9 +1,59 @@
 ---
 import Base from '@/layouts/Base.astro';
+import fs from 'node:fs';
+import path from 'node:path';
 
-const latestVersion = '0.0.1';
-const releaseDate = '03/05/2026';
-const apkSize = '~ em desenvolvimento';
+// Detecta automaticamente o APK mais novo em public/apk/ no momento do build.
+// Assim o botão sempre serve "o mais atual, o melhor" sem edição manual.
+const apkDir = path.join(process.cwd(), 'public', 'apk');
+
+type Apk = {
+  file: string;
+  version: string;
+  channel: string;
+  size: number;
+  mtime: Date;
+  major: number;
+  minor: number;
+  patch: number;
+};
+
+let apks: Apk[] = [];
+try {
+  apks = fs
+    .readdirSync(apkDir)
+    .filter((f) => f.toLowerCase().endsWith('.apk'))
+    .map((file) => {
+      const m = file.match(/v(\d+)\.(\d+)\.(\d+)(?:-([^.]+))?\.apk$/i);
+      const [maj, min, pat] = m ? [+m[1], +m[2], +m[3]] : [0, 0, 0];
+      return {
+        file,
+        version: m ? `${maj}.${min}.${pat}` : '0.0.0',
+        channel: m && m[4] ? m[4] : '',
+        size: fs.statSync(path.join(apkDir, file)).size,
+        mtime: fs.statSync(path.join(apkDir, file)).mtime,
+        major: maj,
+        minor: min,
+        patch: pat,
+      };
+    })
+    .sort(
+      (a, b) =>
+        b.major - a.major || b.minor - a.minor || b.patch - a.patch,
+    );
+} catch {
+  apks = [];
+}
+
+const latest = apks[0] ?? null;
+const latestVersion = latest?.version ?? '—';
+const releaseDate = latest
+  ? latest.mtime.toLocaleDateString('pt-BR')
+  : '—';
+const apkSize = latest
+  ? `${(latest.size / (1024 * 1024)).toFixed(0)} MB`
+  : '—';
+const apkHref = latest ? `/apk/${latest.file}` : null;
 ---
 
 <Base title="Baixar AulaLogger — Android">
@@ -13,31 +63,40 @@ const apkSize = '~ em desenvolvimento';
       Para Android 10 ou superior · 4 GB de RAM ou mais (recomendado para IA local)
     </p>
 
-    <!-- Versão estável -->
+    <!-- Versão mais recente -->
     <div class="rounded-xl border border-bg-card bg-bg-secondary p-8 mb-6">
       <div class="flex items-start justify-between flex-wrap gap-4 mb-4">
         <div>
-          <h2 class="text-2xl font-bold mb-1">Versão estável</h2>
+          <h2 class="text-2xl font-bold mb-1">Versão mais recente</h2>
           <p class="text-white/60 text-sm">
-            v{latestVersion} · liberada em {releaseDate} · {apkSize}
+            v{latestVersion} · {releaseDate} · {apkSize}
           </p>
         </div>
-        <span
-          class="rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-accent"
-        >
-          Em desenvolvimento
-        </span>
+        {latest?.channel && (
+          <span
+            class="rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-accent capitalize"
+          >
+            {latest.channel}
+          </span>
+        )}
       </div>
       <p class="text-white/70 mb-6">
-        O APK estável da v1.0 estará disponível aqui assim que o desenvolvimento terminar
-        a fase de gravação confiável (estimativa: ~8 semanas).
+        Versão de desenvolvimento mais recente do AulaLogger. Baixe, instale e
+        comece a gravar suas aulas.
       </p>
-      <button
-        class="btn-primary opacity-50 cursor-not-allowed"
-        disabled
-      >
-        Baixar APK (em breve)
-      </button>
+      {apkHref ? (
+        <a
+          href={apkHref}
+          download
+          class="btn-primary inline-block"
+        >
+          Baixar APK (v{latestVersion})
+        </a>
+      ) : (
+        <button class="btn-primary opacity-50 cursor-not-allowed" disabled>
+          Nenhum APK disponível
+        </button>
+      )}
     </div>
 
     <!-- Outras formas -->
