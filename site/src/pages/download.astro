@@ -1,59 +1,62 @@
 ---
 import Base from '@/layouts/Base.astro';
-import fs from 'node:fs';
-import path from 'node:path';
 
-// Detecta automaticamente o APK mais novo em public/apk/ no momento do build.
-// Assim o botão sempre serve "o mais atual, o melhor" sem edição manual.
-const apkDir = path.join(process.cwd(), 'public', 'apk');
+// Distribuição via GitHub Releases (resolve o limite de 25 MB do Cloudflare Pages).
+const REPO = 'caioross/AulaLogger';
+const releasesUrl = `https://github.com/${REPO}/releases`;
+const latestPageUrl = `${releasesUrl}/latest`;
 
-type Apk = {
-  file: string;
-  version: string;
-  channel: string;
-  size: number;
-  mtime: Date;
-  major: number;
-  minor: number;
-  patch: number;
+type Release = {
+  version: string | null;
+  date: string | null;
+  apkUrl: string | null;
+  apkSize: string | null;
+  prerelease: boolean;
 };
 
-let apks: Apk[] = [];
+let rel: Release = {
+  version: null,
+  date: null,
+  apkUrl: null,
+  apkSize: null,
+  prerelease: false,
+};
+
+// No momento do build, descobre a release mais recente e o nome do APK anexado.
+// O link usa o redirect "releases/latest/download/<arquivo>", que o GitHub
+// resolve sempre para a release mais nova — não fica desatualizado entre builds.
 try {
-  apks = fs
-    .readdirSync(apkDir)
-    .filter((f) => f.toLowerCase().endsWith('.apk'))
-    .map((file) => {
-      const m = file.match(/v(\d+)\.(\d+)\.(\d+)(?:-([^.]+))?\.apk$/i);
-      const [maj, min, pat] = m ? [+m[1], +m[2], +m[3]] : [0, 0, 0];
-      return {
-        file,
-        version: m ? `${maj}.${min}.${pat}` : '0.0.0',
-        channel: m && m[4] ? m[4] : '',
-        size: fs.statSync(path.join(apkDir, file)).size,
-        mtime: fs.statSync(path.join(apkDir, file)).mtime,
-        major: maj,
-        minor: min,
-        patch: pat,
-      };
-    })
-    .sort(
-      (a, b) =>
-        b.major - a.major || b.minor - a.minor || b.patch - a.patch,
+  const res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, {
+    headers: {
+      Accept: 'application/vnd.github+json',
+      'User-Agent': 'aulalogger-site',
+    },
+  });
+  if (res.ok) {
+    const data = await res.json();
+    const apk = (data.assets ?? []).find((a: any) =>
+      a?.name?.toLowerCase().endsWith('.apk'),
     );
+    rel = {
+      version: data.tag_name ?? null,
+      date: data.published_at
+        ? new Date(data.published_at).toLocaleDateString('pt-BR')
+        : null,
+      apkUrl: apk ? `${latestPageUrl}/download/${apk.name}` : null,
+      apkSize: apk?.size
+        ? `${(apk.size / (1024 * 1024)).toFixed(0)} MB`
+        : null,
+      prerelease: Boolean(data.prerelease),
+    };
+  }
 } catch {
-  apks = [];
+  // Sem release publicada (ou API indisponível): cai no botão da página de releases.
 }
 
-const latest = apks[0] ?? null;
-const latestVersion = latest?.version ?? '—';
-const releaseDate = latest
-  ? latest.mtime.toLocaleDateString('pt-BR')
-  : '—';
-const apkSize = latest
-  ? `${(latest.size / (1024 * 1024)).toFixed(0)} MB`
-  : '—';
-const apkHref = latest ? `/apk/${latest.file}` : null;
+const hasDirect = Boolean(rel.apkUrl);
+const latestVersion = rel.version ?? '—';
+const releaseDate = rel.date ?? '—';
+const apkSize = rel.apkSize ?? '—';
 ---
 
 <Base title="Baixar AulaLogger — Android">
@@ -69,33 +72,34 @@ const apkHref = latest ? `/apk/${latest.file}` : null;
         <div>
           <h2 class="text-2xl font-bold mb-1">Versão mais recente</h2>
           <p class="text-white/60 text-sm">
-            v{latestVersion} · {releaseDate} · {apkSize}
+            {latestVersion} · {releaseDate} · {apkSize}
           </p>
         </div>
-        {latest?.channel && (
+        {rel.prerelease && (
           <span
-            class="rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-accent capitalize"
+            class="rounded-full bg-warning/20 px-3 py-1 text-xs font-medium text-warning"
           >
-            {latest.channel}
+            Pré-lançamento
           </span>
         )}
       </div>
       <p class="text-white/70 mb-6">
-        Versão de desenvolvimento mais recente do AulaLogger. Baixe, instale e
-        comece a gravar suas aulas.
+        APK assinado, publicado no GitHub Releases. Baixe, instale e comece a
+        gravar suas aulas.
       </p>
-      {apkHref ? (
-        <a
-          href={apkHref}
-          download
-          class="btn-primary inline-block"
-        >
-          Baixar APK (v{latestVersion})
+      {hasDirect ? (
+        <a href={rel.apkUrl} class="btn-primary inline-block">
+          Baixar APK ({latestVersion})
         </a>
       ) : (
-        <button class="btn-primary opacity-50 cursor-not-allowed" disabled>
-          Nenhum APK disponível
-        </button>
+        <a
+          href={latestPageUrl}
+          class="btn-primary inline-block"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Ver versões no GitHub
+        </a>
       )}
     </div>
 
@@ -104,14 +108,17 @@ const apkHref = latest ? `/apk/${latest.file}` : null;
 
     <div class="space-y-4">
       <a
-        href="https://github.com/<usuario>/aulalogger/releases"
+        href={releasesUrl}
+        target="_blank"
+        rel="noopener noreferrer"
         class="block rounded-xl border border-bg-card bg-bg-secondary p-6 hover:border-accent transition"
       >
         <h3 class="font-semibold text-lg flex items-center gap-2">
           <span>🐙</span> GitHub Releases
         </h3>
         <p class="text-white/60 text-sm mt-2">
-          Histórico completo de versões, incluindo betas e releases anteriores.
+          Histórico completo de versões, incluindo betas e releases anteriores,
+          com checksums SHA-256.
         </p>
       </a>
 
