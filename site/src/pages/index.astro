@@ -1,85 +1,337 @@
 ---
 import Base from '@/layouts/Base.astro';
 
-const features = [
+const comparisonRows = [
+  { feature: '100% offline', aulalogger: 'full', otter: 'no', recorder: 'full' },
+  { feature: 'Áudio de 4h+ sem travar', aulalogger: 'full', otter: 'full', recorder: 'partial' },
+  { feature: 'Transcrição', aulalogger: 'full', otter: 'full', recorder: 'no' },
+  { feature: 'Transcrição no aparelho', aulalogger: 'full', otter: 'no', recorder: 'no' },
+  { feature: 'Separa quem falou', aulalogger: 'partial', otter: 'full', recorder: 'no' },
+  { feature: 'Análise pedagógica', aulalogger: 'full', otter: 'partial', recorder: 'no' },
+  { feature: 'Privacidade do aluno', aulalogger: 'full', otter: 'no', recorder: 'full' },
+  { feature: 'Open source', aulalogger: 'full', otter: 'no', recorder: 'no' },
+  { feature: 'Sem assinatura', aulalogger: 'full', otter: 'partial', recorder: 'partial' },
+];
+
+const stats = [
+  { value: '4h+', label: 'gravação contínua sem perder um segundo' },
+  { value: '0', label: 'bytes de áudio enviados para a nuvem' },
+  { value: '3', label: 'modelos Whisper, escolhidos pela RAM' },
+  { value: '100%', label: 'open source · GPL-3.0 · sem telemetria' },
+];
+
+const personas = [
+  'Professores presenciais',
+  'Instrutores online',
+  'Tutores particulares',
+  'Palestrantes',
+  'Coaches',
+  'Quem fala muito e quer registro inteligente',
+];
+
+const faqs = [
   {
-    title: 'Gravação que não falha',
-    description:
-      'Aulas de 4 horas ou mais, com a tela apagada, em qualquer celular. O foreground service nativo garante que nem o sistema, nem o app, vão interromper sua sessão.',
+    q: 'O áudio das minhas aulas vai para a nuvem?',
+    a: 'Não. A gravação e a transcrição acontecem 100% no seu celular. Só o <strong>texto</strong> da transcrição é enviado — e apenas se você ativar a análise em nuvem, apenas para o provedor que você escolher, usando a sua própria chave de API.',
   },
   {
-    title: 'Transcrição hiper-detalhada',
-    description:
-      'Whisper rodando direto no seu celular. Português brasileiro técnico, com vocabulário customizável, timestamps por palavra e busca instantânea.',
+    q: 'Funciona offline, em modo avião?',
+    a: 'Sim. Depois de baixar o modelo de transcrição uma vez, gravar e transcrever funcionam sem nenhuma conexão. A internet só é usada se você optar pela análise em nuvem.',
   },
   {
-    title: 'Sabe quem falou',
-    description:
-      'Diarização automática separa você dos seus alunos. Cadastre sua voz uma vez e o app reconhece em todas as aulas. Edite as marcações se quiser.',
+    q: 'É grátis? Tem pegadinha?',
+    a: 'O app é grátis e open source (GPL-3.0), sem anúncios e sem telemetria. A transcrição local não custa nada. A análise em nuvem é opcional e usa a sua chave de API — você paga centavos direto ao provedor (Claude, OpenAI, Gemini ou OpenRouter), sem intermediário.',
   },
   {
-    title: 'Análise pedagógica com IA',
-    description:
-      'Resumos, tópicos, glossário, métricas de ritmo e silêncio, perguntas dos alunos, alertas em tempo real — tudo gerado pela IA local. Cloud é opcional.',
+    q: 'Quanto tempo leva para transcrever uma aula?',
+    a: 'Depende do modelo e do aparelho, mas roda em segundo plano e costuma ficar perto do tempo real. O app mostra um <strong>ETA honesto</strong> ("faltam 12 min"), nunca um "carregando…" sem fim. O VAD pula silêncios e acelera 30–50%.',
   },
   {
-    title: '100% offline e privado',
-    description:
-      'Áudio nunca sai do seu celular. Transcrição nunca sai do seu celular. Modo avião funciona perfeitamente. Você decide o que sair, quando.',
+    q: 'Quais celulares são compatíveis?',
+    a: 'Android 10 ou superior, com cerca de 4 GB de RAM para a transcrição local. O AulaLogger escolhe automaticamente o modelo Whisper ideal para a memória do seu aparelho.',
   },
   {
-    title: 'Open source, sem ads',
-    description:
-      'GPL-3.0. Sem coleta de dados. Sem telemetria. Sem propaganda. Ferramenta de verdade, não produto extraindo seus dados.',
+    q: 'Ele identifica quem falou?',
+    a: 'Hoje, de forma heurística: separa os trechos por pausas e marca "Locutor A / Locutor B", que você pode renomear. A diarização real (por impressão de voz, com cadastro do professor) está no roadmap.',
   },
 ];
 
-const comparisonRows = [
-  { feature: '100% offline', aulalogger: '✅', otter: '❌', recorder: '✅' },
-  { feature: 'Áudio de 4h+', aulalogger: '✅', otter: '✅', recorder: '⚠️' },
-  { feature: 'Transcrição', aulalogger: '✅', otter: '✅', recorder: '❌' },
-  { feature: 'Identifica quem falou', aulalogger: '✅', otter: '✅', recorder: '❌' },
-  { feature: 'Análise pedagógica', aulalogger: '✅', otter: '⚠️', recorder: '❌' },
-  { feature: 'Privacidade do aluno', aulalogger: '✅', otter: '❌', recorder: '✅' },
-  { feature: 'Open source', aulalogger: '✅', otter: '❌', recorder: '❌' },
-  { feature: 'Grátis sempre', aulalogger: '✅', otter: '⚠️', recorder: '⚠️' },
-];
+const softwareLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'AulaLogger',
+  operatingSystem: 'Android 10+',
+  applicationCategory: 'EducationalApplication',
+  description:
+    'Aplicativo Android para gravar aulas longas (4h+) sem travar, transcrever com Whisper rodando no próprio celular e analisar com IA. Offline-first, open source, sem telemetria.',
+  url: 'https://aulalogger.com.br',
+  downloadUrl: 'https://github.com/caioross/AulaLogger/releases/latest',
+  softwareVersion: '0.7.4',
+  inLanguage: 'pt-BR',
+  license: 'https://www.gnu.org/licenses/gpl-3.0.html',
+  isAccessibleForFree: true,
+  author: { '@type': 'Person', name: 'Caio' },
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'BRL' },
+  featureList: [
+    'Gravação confiável de 4h+ com recuperação de crash',
+    'Transcrição on-device com Whisper.cpp',
+    'Análise pedagógica com IA (cloud opcional, sua chave)',
+    'Separação heurística de locutores',
+    '100% offline e privado, sem telemetria',
+  ],
+};
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+  })),
+};
+
+const cell = (v: string) =>
+  v === 'full' ? 'full' : v === 'partial' ? 'partial' : 'no';
+
+const renderCell = (state: string) => {
+  if (state === 'full')
+    return '<span class="text-success text-lg" title="Completo">✓</span>';
+  if (state === 'partial')
+    return '<span class="text-warning text-lg" title="Parcial / com ressalvas">◐</span>';
+  return '<span class="text-white/25 text-lg" title="Não tem">✕</span>';
+};
 ---
 
-<Base title="AulaLogger — gravação e análise de aulas, no seu celular">
-  <!-- Hero -->
-  <section class="px-6 pt-20 pb-24 text-center">
-    <h1 class="text-5xl md:text-7xl font-bold tracking-tight">AulaLogger</h1>
-    <p class="mt-6 text-xl md:text-2xl text-white/80 max-w-2xl mx-auto">
-      Grave, transcreva e analise suas aulas.<br />
-      <span class="text-white/60">Tudo no seu celular. Sem nuvem.</span>
-    </p>
-    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
-      <a href="/download" class="btn-primary">Baixar para Android</a>
-      <a
-        href="https://github.com/caioross/AulaLogger"
-        class="btn-secondary"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Ver no GitHub
-      </a>
+<Base
+  title="AulaLogger — grave, transcreva e analise aulas no seu celular, sem nuvem"
+  structuredData={[softwareLd, faqLd]}
+>
+  <!-- ───────────────── Hero ───────────────── -->
+  <section class="relative overflow-hidden px-6 pb-20 pt-16 md:pt-24">
+    <div class="bg-grid pointer-events-none absolute inset-0 -z-10"></div>
+    <div class="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
+      <!-- Coluna texto -->
+      <div class="text-center lg:text-left">
+        <span class="badge animate-in delay-1">
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-success"></span>
+          </span>
+          Open source · 100% offline · v0.7.4 beta
+        </span>
+
+        <h1 class="animate-in delay-2 mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
+          Sua aula de 4 horas<br class="hidden sm:block" />
+          vira <span class="text-gradient text-gradient-animated">conhecimento</span><br class="hidden sm:block" />
+          sem sair do celular.
+        </h1>
+
+        <p class="animate-in delay-3 mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/65 lg:mx-0">
+          Grave aulas longas sem medo de travar, transcreva com o Whisper rodando
+          <strong class="text-white/90">dentro do seu aparelho</strong> e receba uma
+          análise pedagógica da aula. O áudio nunca sai do celular.
+        </p>
+
+        <div class="animate-in delay-4 mt-9 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
+          <a href="/download" class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true"
+              ><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"></path></svg
+            >
+            Baixar para Android
+          </a>
+          <a
+            href="https://github.com/caioross/AulaLogger"
+            class="btn-secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true"
+              ><path d="M12 .5C5.37.5 0 5.78 0 12.29c0 5.21 3.44 9.63 8.2 11.19.6.11.82-.25.82-.57v-2c-3.34.71-4.04-1.6-4.04-1.6-.55-1.36-1.33-1.72-1.33-1.72-1.09-.73.08-.72.08-.72 1.2.08 1.84 1.21 1.84 1.21 1.07 1.8 2.8 1.28 3.49.98.11-.76.42-1.28.76-1.58-2.67-.3-5.47-1.31-5.47-5.83 0-1.29.47-2.34 1.24-3.17-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.21a11.6 11.6 0 0 1 6 0c2.29-1.53 3.3-1.21 3.3-1.21.66 1.65.25 2.87.12 3.17.77.83 1.23 1.88 1.23 3.17 0 4.53-2.81 5.52-5.49 5.81.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.57A12.01 12.01 0 0 0 24 12.29C24 5.78 18.63.5 12 .5z"
+              ></path></svg
+            >
+            Ver no GitHub
+          </a>
+        </div>
+
+        <p class="animate-in delay-5 mt-5 text-sm text-white/40">
+          Android 10+ · sem coleta de dados · sem propaganda
+        </p>
+      </div>
+
+      <!-- Coluna mockup (tela de gravação) -->
+      <div class="animate-in delay-3 flex justify-center lg:justify-end">
+        <div class="animate-float relative w-[300px]">
+          <div class="absolute -inset-6 -z-10 rounded-[3rem] bg-brand-gradient opacity-25 blur-3xl"></div>
+          <div class="rounded-[2.2rem] border border-white/10 bg-bg-secondary p-3 shadow-glow-lg">
+            <div class="overflow-hidden rounded-[1.7rem] border border-white/[0.06] bg-bg-primary">
+              <!-- barra de status -->
+              <div class="flex items-center justify-between px-5 pt-4 text-[11px] text-white/45">
+                <span>21:34</span>
+                <span class="flex items-center gap-1">📶 🔋 87%</span>
+              </div>
+              <!-- conteúdo -->
+              <div class="px-6 py-7 text-center">
+                <div class="text-[13px] uppercase tracking-[0.2em] text-white/40">Gravando aula</div>
+                <div class="mt-3 font-mono text-4xl font-semibold tracking-tight text-white">01:23:45</div>
+                <div class="mt-2 flex items-center justify-center gap-2 text-xs font-semibold text-danger">
+                  <span class="h-2.5 w-2.5 animate-pulse-rec rounded-full bg-danger"></span> REC
+                </div>
+
+                <!-- waveform -->
+                <div class="waveform mt-7 justify-center">
+                  {
+                    [38, 64, 22, 80, 46, 92, 30, 70, 52, 86, 26, 60, 44, 96, 34, 74, 50, 88, 28, 58, 42, 78].map(
+                      (h, i) => (
+                        <span style={`height:${h}%;animation-delay:${(i * 0.07).toFixed(2)}s`} />
+                      ),
+                    )
+                  }
+                </div>
+
+                <!-- status honesto -->
+                <div class="mt-7 space-y-2 rounded-xl border border-white/[0.06] bg-white/[0.02] p-3 text-left text-[11px] text-white/50">
+                  <div class="flex items-center justify-between"><span>💾 Último save</span><span class="text-success">há 8 s</span></div>
+                  <div class="flex items-center justify-between"><span>💿 Espaço livre</span><span>12,4 GB</span></div>
+                  <div class="flex items-center justify-between"><span>📡 Rede</span><span class="text-success">não usada</span></div>
+                </div>
+
+                <!-- botões -->
+                <div class="mt-6 flex gap-3">
+                  <div class="flex-1 rounded-xl border border-white/10 bg-white/[0.04] py-3 text-sm font-semibold text-white/80">❚❚ Pausar</div>
+                  <div class="flex-1 rounded-xl bg-gradient-to-r from-accent to-violet py-3 text-sm font-semibold text-white">⏹ Parar</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <p class="mt-6 text-sm text-white/40">
-      Para Android 10+ · 100% open source · Sem coleta de dados
-    </p>
   </section>
 
-  <!-- Features -->
-  <section class="px-6 py-16 bg-bg-secondary">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">O que ele faz</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <!-- ───────────────── Stats ───────────────── -->
+  <section class="px-6 py-6">
+    <div class="mx-auto grid max-w-5xl grid-cols-2 gap-4 md:grid-cols-4">
+      {
+        stats.map((s) => (
+          <div class="reveal rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 text-center">
+            <div class="text-gradient text-3xl font-extrabold md:text-4xl">{s.value}</div>
+            <div class="mt-1.5 text-xs leading-snug text-white/55">{s.label}</div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ───────────────── O que faz ───────────────── -->
+  <section class="section-glow px-6 py-20">
+    <div class="mx-auto max-w-6xl">
+      <div class="reveal mx-auto max-w-2xl text-center">
+        <span class="eyebrow">O que ele faz</span>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
+          Quatro etapas, um aperto de botão
+        </h2>
+        <p class="mt-4 text-white/60">
+          Gravar, transcrever e analisar — sem assinatura, sem upload do áudio, sem complicação.
+        </p>
+      </div>
+
+      <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- 1 -->
+        <div class="reveal card">
+          <div class="grid h-11 w-11 place-items-center rounded-xl bg-accent/15 text-accent-soft">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+          </div>
+          <h3 class="mt-5 text-lg font-semibold">Gravação que não falha</h3>
+          <p class="mt-2 leading-relaxed text-white/60">
+            Aulas de 4h+ com a tela apagada, em qualquer celular. Um serviço nativo
+            grava direto em disco com <code class="text-accent-soft">fsync</code> — se o app cair,
+            você recupera tudo até o último segundo.
+          </p>
+        </div>
+        <!-- 2 -->
+        <div class="reveal card">
+          <div class="grid h-11 w-11 place-items-center rounded-xl bg-accent/15 text-accent-soft">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
+          </div>
+          <h3 class="mt-5 text-lg font-semibold">Transcrição no aparelho</h3>
+          <p class="mt-2 leading-relaxed text-white/60">
+            Whisper.cpp rodando localmente, com modelo escolhido pela RAM do celular.
+            Sem upload, sem custo por minuto, funciona em modo avião. O VAD pula
+            silêncios e acelera tudo.
+          </p>
+        </div>
+        <!-- 3 -->
+        <div class="reveal card">
+          <div class="grid h-11 w-11 place-items-center rounded-xl bg-accent/15 text-accent-soft">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 class="mt-5 text-lg font-semibold">Sabe quem falou</h3>
+          <p class="mt-2 leading-relaxed text-white/60">
+            Separa automaticamente os trechos por locutor e marca "Locutor A / B" —
+            que você renomeia como quiser. Diarização por voz real está chegando.
+          </p>
+        </div>
+        <!-- 4 -->
+        <div class="reveal card">
+          <div class="grid h-11 w-11 place-items-center rounded-xl bg-accent/15 text-accent-soft">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44A2.5 2.5 0 0 1 2 17.5v-1a2.5 2.5 0 0 1-1-2 2.5 2.5 0 0 1 1-2v-1a2.5 2.5 0 0 1 2.04-4.94A2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5"/></svg>
+          </div>
+          <h3 class="mt-5 text-lg font-semibold">Análise pedagógica com IA</h3>
+          <p class="mt-2 leading-relaxed text-white/60">
+            Tema, tópicos, resumo, pontos fortes e sugestões para a próxima aula.
+            Usa a IA da nuvem que <strong class="text-white/90">você</strong> escolher,
+            com a sua chave — e só o texto, nunca o áudio.
+          </p>
+        </div>
+        <!-- 5 -->
+        <div class="reveal card">
+          <div class="grid h-11 w-11 place-items-center rounded-xl bg-success/15 text-success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="mt-5 text-lg font-semibold">100% offline e privado</h3>
+          <p class="mt-2 leading-relaxed text-white/60">
+            O áudio e a transcrição nunca saem do celular. Zero telemetria, zero
+            analytics, nenhum servidor nosso. Você decide o que sai, quando, e para onde.
+          </p>
+        </div>
+        <!-- 6 -->
+        <div class="reveal card">
+          <div class="grid h-11 w-11 place-items-center rounded-xl bg-violet/15 text-violet">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <h3 class="mt-5 text-lg font-semibold">Open source, sem ads</h3>
+          <p class="mt-2 leading-relaxed text-white/60">
+            GPL-3.0, código auditável no GitHub. Sem coleta de dados, sem propaganda,
+            sem dark patterns. Uma ferramenta de verdade — não um produto extraindo
+            os seus dados.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────── Como funciona ───────────────── -->
+  <section class="px-6 py-20">
+    <div class="mx-auto max-w-5xl">
+      <div class="reveal mx-auto max-w-2xl text-center">
+        <span class="eyebrow">Como funciona</span>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight md:text-4xl">Do "gravar" ao insight</h2>
+      </div>
+      <div class="relative mt-14 grid gap-8 md:grid-cols-3">
+        <div class="pointer-events-none absolute left-0 right-0 top-7 hidden h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent md:block"></div>
         {
-          features.map((f) => (
-            <div class="rounded-xl bg-bg-card p-6">
-              <h3 class="font-semibold text-lg mb-2">{f.title}</h3>
-              <p class="text-white/70 leading-relaxed">{f.description}</p>
+          [
+            { n: '1', t: 'Aperte gravar', d: 'Um botão grande, contagem regressiva e pronto. Pode trancar o celular — a gravação segue firme por horas.' },
+            { n: '2', t: 'Termine a aula', d: 'Aperte parar. A transcrição roda em segundo plano, no próprio aparelho, mostrando o tempo restante de verdade.' },
+            { n: '3', t: 'Receba a análise', d: 'Leia a transcrição com timestamps, separe quem falou e gere uma análise pedagógica quando quiser.' },
+          ].map((s) => (
+            <div class="reveal relative text-center">
+              <div class="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-accent to-violet text-xl font-bold text-white shadow-glow">
+                {s.n}
+              </div>
+              <h3 class="mt-5 text-lg font-semibold">{s.t}</h3>
+              <p class="mx-auto mt-2 max-w-xs leading-relaxed text-white/60">{s.d}</p>
             </div>
           ))
         }
@@ -87,61 +339,121 @@ const comparisonRows = [
     </div>
   </section>
 
-  <!-- Para quem é -->
-  <section class="px-6 py-16">
-    <div class="max-w-3xl mx-auto text-center">
-      <h2 class="text-3xl md:text-4xl font-bold mb-8">Para quem é</h2>
-      <p class="text-xl text-white/80 leading-relaxed">
-        Professores presenciais. Instrutores online. Tutores particulares.
-        Palestrantes. Coaches. Qualquer pessoa que fala muito e quer registro
-        inteligente do que ensinou.
-      </p>
+  <!-- ───────────────── Privacidade ───────────────── -->
+  <section class="px-6 py-10">
+    <div class="reveal mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/[0.07] bg-gradient-to-br from-accent/[0.12] via-violet/[0.06] to-transparent p-8 md:p-12">
+      <div class="grid items-center gap-8 md:grid-cols-[auto_1fr]">
+        <div class="grid h-20 w-20 place-items-center rounded-3xl bg-bg-primary/60 text-success shadow-glow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold tracking-tight md:text-3xl">Privacidade que não é só marketing</h2>
+          <ul class="mt-5 space-y-3 text-white/75">
+            <li class="flex gap-3"><span class="text-success">✓</span> <span><strong class="text-white">O áudio nunca sai do seu celular.</strong> Gravação e transcrição são 100% locais.</span></li>
+            <li class="flex gap-3"><span class="text-success">✓</span> <span><strong class="text-white">A nuvem é opt-in.</strong> Só o texto vai, só se você ligar, só para o provedor que você escolheu, com a sua chave.</span></li>
+            <li class="flex gap-3"><span class="text-success">✓</span> <span><strong class="text-white">Não há o que vazar do nosso lado.</strong> Sem servidor, sem coleta, sem telemetria.</span></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Comparação -->
-  <section class="px-6 py-16 bg-bg-secondary">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">
-        Por que não outro app?
+  <!-- ───────────────── Para quem é ───────────────── -->
+  <section class="px-6 py-20">
+    <div class="reveal mx-auto max-w-3xl text-center">
+      <span class="eyebrow">Para quem é</span>
+      <h2 class="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
+        Feito para quem ensina de verdade
       </h2>
-      <p class="text-center text-white/60 mb-12">
-        Honesta comparação com alternativas comuns.
-      </p>
-      <div class="overflow-x-auto rounded-xl bg-bg-card">
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        {
+          personas.map((p) => (
+            <span class="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-white/75 transition hover:border-accent/40 hover:text-white">
+              {p}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────── Comparação ───────────────── -->
+  <section class="px-6 py-16">
+    <div class="mx-auto max-w-4xl">
+      <div class="reveal mx-auto max-w-2xl text-center">
+        <span class="eyebrow">Por que não outro app?</span>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight md:text-4xl">Uma comparação honesta</h2>
+      </div>
+
+      <div class="reveal mt-12 overflow-x-auto rounded-2xl border border-white/[0.07] bg-white/[0.02]">
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-white/10">
-              <th class="text-left p-4 font-semibold">Recurso</th>
-              <th class="p-4 font-semibold text-accent">AulaLogger</th>
-              <th class="p-4 font-semibold text-white/60">Otter / Fireflies</th>
-              <th class="p-4 font-semibold text-white/60">Gravador comum</th>
+              <th class="p-4 text-left font-semibold text-white/70">Recurso</th>
+              <th class="p-4 font-bold text-accent-soft">AulaLogger</th>
+              <th class="p-4 font-medium text-white/50">Otter / Fireflies</th>
+              <th class="p-4 font-medium text-white/50">Gravador comum</th>
             </tr>
           </thead>
           <tbody>
             {
               comparisonRows.map((r) => (
-                <tr class="border-b border-white/5 last:border-0">
+                <tr class="border-b border-white/[0.05] last:border-0">
                   <td class="p-4 text-white/80">{r.feature}</td>
-                  <td class="p-4 text-center text-lg">{r.aulalogger}</td>
-                  <td class="p-4 text-center text-lg">{r.otter}</td>
-                  <td class="p-4 text-center text-lg">{r.recorder}</td>
+                  <td class="bg-accent/[0.06] p-4 text-center">
+                    <span set:html={renderCell(cell(r.aulalogger))} />
+                  </td>
+                  <td class="p-4 text-center"><span set:html={renderCell(cell(r.otter))} /></td>
+                  <td class="p-4 text-center"><span set:html={renderCell(cell(r.recorder))} /></td>
                 </tr>
               ))
             }
           </tbody>
         </table>
       </div>
+      <p class="mt-4 text-center text-xs text-white/40">
+        ✓ completo · ◐ parcial / com ressalvas · ✕ não tem
+      </p>
     </div>
   </section>
 
-  <!-- CTA final -->
-  <section class="px-6 py-24 text-center">
-    <h2 class="text-3xl md:text-4xl font-bold mb-4">Pronto para começar?</h2>
-    <p class="text-white/60 mb-8 max-w-xl mx-auto">
-      Baixe o APK, conceda permissão de microfone, e grave sua próxima aula
-      sem se preocupar com nada.
-    </p>
-    <a href="/download" class="btn-primary">Baixar agora</a>
+  <!-- ───────────────── FAQ ───────────────── -->
+  <section class="px-6 py-20">
+    <div class="mx-auto max-w-3xl">
+      <div class="reveal text-center">
+        <span class="eyebrow">Perguntas frequentes</span>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight md:text-4xl">As dúvidas mais comuns</h2>
+      </div>
+      <div class="reveal mt-10 space-y-3">
+        {
+          faqs.map((f) => (
+            <details class="group rounded-2xl border border-white/[0.07] bg-white/[0.02] px-5 open:border-accent/30 open:bg-white/[0.04]">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold text-white marker:hidden">
+                {f.q}
+                <svg class="h-5 w-5 flex-shrink-0 text-accent-soft transition-transform group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </summary>
+              <p class="pb-5 leading-relaxed text-white/65" set:html={f.a} />
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────── CTA final ───────────────── -->
+  <section class="px-6 py-16">
+    <div class="reveal relative mx-auto max-w-4xl overflow-hidden rounded-3xl border border-white/10 p-10 text-center md:p-16">
+      <div class="absolute inset-0 -z-10 bg-gradient-to-br from-accent/20 via-violet/10 to-cyan/10"></div>
+      <div class="bg-grid pointer-events-none absolute inset-0 -z-10 opacity-60"></div>
+      <h2 class="text-3xl font-bold tracking-tight md:text-4xl">Pronto para nunca mais perder uma aula?</h2>
+      <p class="mx-auto mt-4 max-w-xl text-white/65">
+        Baixe o APK, conceda o microfone e grave sua próxima aula sem se preocupar
+        com mais nada. Grátis, open source, no seu celular.
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <a href="/download" class="btn-primary">Baixar agora</a>
+        <a href="/docs" class="btn-secondary">Ler a documentação</a>
+      </div>
+    </div>
   </section>
 </Base>

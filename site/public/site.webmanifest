@@ -1,0 +1,20 @@
+{
+  "name": "AulaLogger",
+  "short_name": "AulaLogger",
+  "description": "Grave, transcreva e analise aulas de 4 horas — inteiro no seu celular, sem nuvem. Open source, offline-first, sem telemetria.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "categories": ["education", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -7,15 +7,52 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  keywords?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article';
+  /** JSON-LD adicional específico da página (objeto ou array). */
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
   title,
-  description = 'Grave, transcreva e analise suas aulas. Tudo no seu celular. Sem nuvem.',
+  description = 'Grave aulas de 4 horas sem travar, transcreva com Whisper rodando no próprio celular e analise com IA. 100% offline, open source, sem telemetria.',
   ogImage = '/og-image.png',
+  keywords = 'gravar aula, transcrição de aula, transcrição offline, Whisper Android, transcrever áudio celular, app para professores, gravador de aula longa, transcrição português, IA para professores, análise de aula, AulaLogger, open source',
+  noindex = false,
+  type = 'website',
+  structuredData,
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const site = Astro.site ?? new URL('https://aulalogger.com.br');
+const canonical = new URL(Astro.url.pathname, site).toString();
+const ogImageUrl = new URL(ogImage, site).toString();
+
+const baseGraph: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'AulaLogger',
+    url: site.toString(),
+    inLanguage: 'pt-BR',
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'AulaLogger',
+    url: site.toString(),
+    logo: new URL('/favicon.svg', site).toString(),
+    sameAs: ['https://github.com/caioross/AulaLogger'],
+  },
+];
+
+const extra = structuredData
+  ? Array.isArray(structuredData)
+    ? structuredData
+    : [structuredData]
+  : [];
+const jsonLd = [...baseGraph, ...extra];
 ---
 
 <!doctype html>
@@ -27,26 +64,56 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content="Caio — AulaLogger" />
+    <meta
+      name="robots"
+      content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'}
+    />
     <link rel="canonical" href={canonical} />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="AulaLogger" />
+    <meta property="og:locale" content="pt_BR" />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="AulaLogger — grave, transcreva e analise aulas no seu celular" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content="AulaLogger — gravação e transcrição de aulas offline" />
 
+    <!-- Ícones / PWA -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="mask-icon" href="/favicon.svg" color="#6366f1" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0a0a0a" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="application-name" content="AulaLogger" />
+    <meta name="apple-mobile-web-app-title" content="AulaLogger" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Dados estruturados -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="flex min-h-screen flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-white"
+    >
+      Pular para o conteúdo
+    </a>
     <Header />
-    <main class="flex-1">
+    <main id="main" class="flex-1">
       <slot />
     </main>
     <Footer />

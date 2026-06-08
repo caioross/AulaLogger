@@ -2,10 +2,24 @@
 import Base from '@/layouts/Base.astro';
 ---
 
-<Base title="Não encontrado — AulaLogger">
-  <section class="px-6 py-32 text-center">
-    <h1 class="text-7xl font-bold text-accent">404</h1>
-    <p class="mt-4 text-xl text-white/70">Esta página não existe.</p>
-    <a href="/" class="btn-primary mt-8 inline-block">Voltar ao início</a>
+<Base title="Página não encontrada — AulaLogger" noindex={true}>
+  <section class="flex flex-col items-center px-6 py-28 text-center">
+    <div class="waveform mb-8 h-16">
+      {
+        [30, 60, 20, 80, 40, 18, 70, 35].map((h, i) => (
+          <span style={`height:${h}%;animation-delay:${(i * 0.1).toFixed(1)}s`} />
+        ))
+      }
+    </div>
+    <h1 class="text-7xl font-extrabold tracking-tight">
+      <span class="text-gradient">404</span>
+    </h1>
+    <p class="mt-4 max-w-md text-lg text-white/65">
+      Essa página sumiu sem deixar transcrição. Mas o que você gravou continua salvo. 🎙️
+    </p>
+    <div class="mt-9 flex flex-wrap justify-center gap-3">
+      <a href="/" class="btn-primary">Voltar ao início</a>
+      <a href="/download" class="btn-secondary">Baixar o app</a>
+    </div>
   </section>
 </Base>

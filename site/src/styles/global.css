@@ -2,29 +2,220 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ───────────────────────── Base ───────────────────────── */
 @layer base {
   html {
     @apply bg-bg-primary text-white;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
   body {
     @apply min-h-screen;
+    background-image:
+      radial-gradient(50rem 30rem at 50% -10%, rgba(99, 102, 241, 0.16), transparent 60%),
+      radial-gradient(40rem 28rem at 100% 8%, rgba(139, 92, 246, 0.1), transparent 55%),
+      radial-gradient(36rem 26rem at 0% 20%, rgba(34, 211, 238, 0.06), transparent 55%);
+    background-attachment: fixed;
   }
+
   ::selection {
     @apply bg-accent text-white;
   }
+
+  :focus-visible {
+    outline: 2px solid theme('colors.accent.hover');
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Tipografia de títulos: tracking apertado, peso forte */
+  h1, h2, h3 {
+    letter-spacing: -0.02em;
+  }
 }
 
+/* ───────────────────────── Componentes ───────────────────────── */
 @layer components {
   .container-prose {
     @apply mx-auto max-w-prose px-6;
   }
+
+  /* Botão primário: gradiente de marca + glow + leve elevação no hover */
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-lg bg-accent px-6 py-3 font-semibold text-white transition hover:bg-accent-hover;
+    @apply relative inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 font-semibold text-white transition-all duration-200;
+    background: linear-gradient(110deg, #6366f1, #8b5cf6);
+    box-shadow: 0 8px 30px -10px rgba(99, 102, 241, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
   }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 44px -10px rgba(99, 102, 241, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+    filter: brightness(1.06);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
   .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-lg border border-bg-card bg-bg-secondary px-6 py-3 font-semibold text-white transition hover:bg-bg-card;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.12] bg-white/[0.03] px-6 py-3 font-semibold text-white transition-all duration-200 backdrop-blur;
   }
+  .btn-secondary:hover {
+    @apply border-white/25 bg-white/[0.07];
+    transform: translateY(-2px);
+  }
+
+  /* Cartão de vidro com elevação no hover */
+  .card {
+    @apply relative rounded-2xl border border-white/[0.07] bg-white/[0.025] p-6 transition-all duration-300;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.04) inset, 0 10px 30px -18px rgba(0, 0, 0, 0.9);
+  }
+  .card:hover {
+    @apply border-accent/40 bg-white/[0.05];
+    transform: translateY(-4px);
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.06) inset, 0 24px 50px -22px rgba(99, 102, 241, 0.5);
+  }
+
+  /* Pílula / badge */
+  .badge {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-white/[0.04] px-3.5 py-1.5 text-sm font-medium text-white/80 backdrop-blur;
+  }
+
+  /* Selo de "eyebrow" acima de títulos de seção */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-accent-soft;
+  }
+
+  /* Linha divisória em gradiente */
+  .hr-glow {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+    border: 0;
+  }
+}
+
+/* ───────────────────────── Utilitários ───────────────────────── */
+@layer utilities {
+  /* Texto com gradiente de marca */
+  .text-gradient {
+    background: linear-gradient(110deg, #a5b4fc 0%, #818cf8 30%, #8b5cf6 65%, #22d3ee 120%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .text-gradient-animated {
+    animation: shimmer 8s linear infinite;
+  }
+
+  /* Fundo em grade sutil (data/tech feel) */
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 30%, #000 30%, transparent 80%);
+    mask-image: radial-gradient(70% 60% at 50% 30%, #000 30%, transparent 80%);
+  }
+
+  /* Glow radial de fundo para seções */
+  .section-glow {
+    position: relative;
+  }
+  .section-glow::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(40rem 20rem at 50% 0%, rgba(99, 102, 241, 0.1), transparent 60%);
+    pointer-events: none;
+  }
+}
+
+/* ─────────────── Scroll reveal (progressivo, sem JS) ───────────────
+   Por padrão o conteúdo é visível. Onde houver suporte a animações de
+   timeline e o usuário não pediu movimento reduzido, os elementos
+   sobem suavemente ao entrar na viewport. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Animação de entrada do hero (no load) — guardada por motion preference */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-in {
+    opacity: 0;
+    animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .delay-1 { animation-delay: 0.08s; }
+  .delay-2 { animation-delay: 0.16s; }
+  .delay-3 { animation-delay: 0.24s; }
+  .delay-4 { animation-delay: 0.32s; }
+  .delay-5 { animation-delay: 0.4s; }
+}
+
+/* ─────────────── Waveform animado (motivo da marca) ─────────────── */
+.waveform {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 56px;
+}
+.waveform span {
+  display: block;
+  width: 4px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #818cf8, #6366f1);
+  animation: wave 1.2s ease-in-out infinite;
+}
+@keyframes wave {
+  0%, 100% { height: 16%; opacity: 0.55; }
+  50% { height: 100%; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .waveform span { animation: none; height: 45%; }
+  .animate-in { opacity: 1; animation: none; }
+}
+
+/* ─────────────── Prose (changelog / privacidade / docs) ─────────────── */
+.prose :where(a):not(:where(.not-prose *)) {
+  @apply text-accent-soft no-underline;
+  text-decoration: underline;
+  text-decoration-color: rgba(129, 140, 248, 0.4);
+  text-underline-offset: 3px;
+}
+.prose :where(a):hover:not(:where(.not-prose *)) {
+  text-decoration-color: rgba(129, 140, 248, 1);
+}
+.prose :where(h1, h2, h3):not(:where(.not-prose *)) {
+  @apply text-white;
+}
+.prose :where(code):not(:where(.not-prose *)) {
+  @apply rounded bg-white/[0.07] px-1.5 py-0.5 text-accent-soft;
+  font-weight: 500;
+}
+.prose :where(strong):not(:where(.not-prose *)) {
+  @apply text-white;
 }

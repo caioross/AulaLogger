@@ -1,33 +1,174 @@
 ---
 import Base from '@/layouts/Base.astro';
+
+const releases = [
+  {
+    v: '0.7.4',
+    name: 'Robustez',
+    date: 'em desenvolvimento',
+    current: true,
+    notes: [
+      'Correções de fluxos de borda e condições de corrida entre threads (a partir dos relatórios internos de auditoria).',
+      'Endurecimento para produção: tratamento de recursos, defesa contra estados inválidos.',
+      'A confiabilidade da gravação longa segue sólida — prioridade número um.',
+    ],
+  },
+  {
+    v: '0.7.3',
+    name: 'Redesign',
+    date: '10/05/2026',
+    notes: [
+      'Reformulação da interface com Material 3.',
+      'Telas de sessão e de análise repensadas para leitura confortável.',
+    ],
+  },
+  {
+    v: '0.7.2',
+    name: 'Progresso',
+    date: '08/05/2026',
+    notes: [
+      'ETA honesto e progresso em tempo real durante a transcrição ("faltam 12 min", não "carregando…").',
+      'Cancelamento responsivo da transcrição em menos de 2 segundos.',
+    ],
+  },
+  {
+    v: '0.7.1',
+    name: 'Velocidade',
+    date: '08/05/2026',
+    notes: [
+      'VAD (Silero) integrado: pula silêncios e acelera a transcrição em 30–50%.',
+      'Menos alucinação do modelo em pausas longas.',
+    ],
+  },
+  {
+    v: '0.7.0',
+    name: 'Correções',
+    date: '05/05/2026',
+    notes: ['Estabilização do pipeline de transcrição e correções pós-polimento.'],
+  },
+  {
+    v: '0.6.0',
+    name: 'Polimento',
+    date: '05/05/2026',
+    notes: ['Refinamento de UX, player de áudio e waveform animado.'],
+  },
+  {
+    v: '0.5.0',
+    name: 'Estável',
+    date: '05/05/2026',
+    notes: ['Marco de estabilidade da gravação longa de 4h+.'],
+  },
+  {
+    v: '0.4.0',
+    name: 'Rolling',
+    date: '05/05/2026',
+    notes: ['Gravação em chunks com escrita incremental e fsync periódico (crash-safe).'],
+  },
+  {
+    v: '0.3.0',
+    name: 'Pro',
+    date: '05/05/2026',
+    notes: ['Recursos avançados de transcrição e gestão de modelos Whisper.'],
+  },
+  {
+    v: '0.2.0',
+    name: 'Streaming',
+    date: '05/05/2026',
+    notes: ['Captura em streaming com escrita WAV contínua.'],
+  },
+  {
+    v: '0.1.0',
+    name: 'Native',
+    date: '04/05/2026',
+    notes: [
+      'Reescrita 100% nativa em Kotlin + Jetpack Compose.',
+      'Primeira transcrição on-device com Whisper.cpp via JNI.',
+    ],
+  },
+];
+
+const roadmap = [
+  'Diarização real por impressão de voz, com cadastro do professor',
+  'Análise com LLM 100% local (sem nuvem nenhuma)',
+  'Exportação rica: PDF, DOCX, SRT, VTT, JSON',
+  'Publicação no F-Droid + keystore de produção',
+  'Suporte a múltiplos idiomas',
+];
 ---
 
-<Base title="Changelog — AulaLogger">
-  <article class="container-prose prose prose-invert prose-lg py-16">
-    <h1>Changelog</h1>
-    <p class="text-white/60">
-      Histórico de mudanças do AulaLogger. Versionamento segue
-      <a href="https://semver.org/lang/pt-BR/" target="_blank">Semantic Versioning</a>.
-    </p>
+<Base
+  title="Changelog — AulaLogger"
+  description="Histórico de versões do AulaLogger, da reescrita nativa (v0.1.0) à v0.7.4. Versionamento por Semantic Versioning."
+>
+  <section class="px-6 pt-16 pb-8">
+    <div class="mx-auto max-w-3xl">
+      <span class="eyebrow">Changelog</span>
+      <h1 class="mt-3 text-4xl font-bold tracking-tight md:text-5xl">O que mudou, versão a versão</h1>
+      <p class="mt-5 text-lg text-white/60">
+        Beta em desenvolvimento ativo. O versionamento segue
+        <a href="https://semver.org/lang/pt-BR/" target="_blank" rel="noopener noreferrer" class="text-accent-soft underline decoration-accent/40 underline-offset-2">Semantic Versioning</a>.
+        Histórico completo de commits no
+        <a href="https://github.com/caioross/AulaLogger" target="_blank" rel="noopener noreferrer" class="text-accent-soft underline decoration-accent/40 underline-offset-2">GitHub</a>.
+      </p>
+    </div>
+  </section>
 
-    <h2>v0.0.1 — em desenvolvimento</h2>
-    <p>Setup inicial do projeto:</p>
-    <ul>
-      <li>Plano de desenvolvimento completo (16 documentos)</li>
-      <li>Esqueleto do app Android (Expo + RN + Kotlin nativo)</li>
-      <li>Esqueleto do site (Astro + Tailwind)</li>
-      <li>Foreground Service de gravação funcional (chunking + WAV)</li>
-      <li>Eventos JS↔nativo (chunkSaved, tick, error)</li>
-      <li>CI/CD (lint, build, deploy do site)</li>
-    </ul>
+  <section class="px-6 pb-10">
+    <div class="mx-auto max-w-3xl">
+      <ol class="relative space-y-8 border-l border-white/10 pl-8">
+        {
+          releases.map((r) => (
+            <li class="relative">
+              <span
+                class:list={[
+                  'absolute -left-[2.55rem] top-1 grid h-6 w-6 place-items-center rounded-full ring-4 ring-bg-primary',
+                  r.current ? 'bg-gradient-to-br from-accent to-violet' : 'bg-bg-elevated',
+                ]}
+              >
+                {r.current && <span class="h-2 w-2 animate-pulse rounded-full bg-white" />}
+              </span>
+              <div class="flex flex-wrap items-center gap-3">
+                <h2 class="text-xl font-bold tracking-tight">
+                  v{r.v} <span class="text-white/40">·</span>
+                  <span class="text-gradient">"{r.name}"</span>
+                </h2>
+                <span
+                  class:list={[
+                    'rounded-full px-2.5 py-0.5 text-xs font-medium',
+                    r.current ? 'bg-success/15 text-success' : 'bg-white/[0.05] text-white/45',
+                  ]}
+                >
+                  {r.date}
+                </span>
+              </div>
+              <ul class="mt-3 space-y-1.5 text-white/65">
+                {r.notes.map((n) => (
+                  <li class="flex gap-2.5">
+                    <span class="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent-soft" />
+                    <span set:html={n} />
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
 
-    <h2>Próximos releases</h2>
-    <p>Conforme o roadmap:</p>
-    <ul>
-      <li><strong>v1.0</strong> — Gravação confiável (4h+, recovery, OEMs agressivos)</li>
-      <li><strong>v1.1</strong> — Transcrição on-device com Whisper</li>
-      <li><strong>v1.2</strong> — Diarização (separar professor de alunos)</li>
-      <li><strong>v1.3</strong> — Análise pedagógica com IA local + cloud opcional</li>
-    </ul>
-  </article>
+  <section class="px-6 py-14">
+    <div class="mx-auto max-w-3xl rounded-3xl border border-white/[0.07] bg-white/[0.02] p-8 md:p-10">
+      <h2 class="text-2xl font-bold tracking-tight">🧭 Rumo à v1.0 e além</h2>
+      <p class="mt-2 text-white/60">O que vem por aí, conforme o roadmap:</p>
+      <ul class="mt-5 space-y-2.5">
+        {
+          roadmap.map((item) => (
+            <li class="flex items-start gap-3 text-white/75">
+              <span class="mt-1 text-accent-soft">○</span> {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
 </Base>

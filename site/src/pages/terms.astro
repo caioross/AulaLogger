@@ -1,0 +1,84 @@
+---
+import Base from '@/layouts/Base.astro';
+const updated = '08 de junho de 2026';
+---
+
+<Base
+  title="Termos de Uso — AulaLogger"
+  description="Termos de uso do AulaLogger: software livre sob licença GPL-3.0, fornecido como está, sem coleta de dados. Suas gravações são suas."
+>
+  <article class="container-prose prose prose-invert prose-lg py-16">
+    <h1>Termos de Uso</h1>
+    <p class="text-white/60">Última atualização: {updated}</p>
+
+    <h2>Resumo em linguagem humana</h2>
+    <p>
+      O AulaLogger é <strong>software livre e gratuito</strong>, distribuído sob a licença
+      <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noopener noreferrer">GPL-3.0</a>.
+      Você pode usar, estudar, modificar e redistribuir. Suas gravações, transcrições e
+      análises são <strong>suas</strong> — nós não temos acesso a elas.
+    </p>
+
+    <h2>1. Licença</h2>
+    <p>
+      O código-fonte é licenciado sob a GPL-3.0. O texto completo da licença acompanha o
+      aplicativo e está disponível no
+      <a href="https://github.com/caioross/AulaLogger/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">repositório oficial</a>.
+    </p>
+
+    <h2>2. Fornecido "como está"</h2>
+    <p>
+      O AulaLogger é fornecido <strong>sem garantias</strong> de qualquer tipo. Embora a
+      confiabilidade da gravação seja nossa prioridade número um — e testada com sessões
+      reais de 4h+ —, nenhum software é infalível. Mantenha backups de gravações importantes
+      e não use o app como única cópia de um conteúdo insubstituível.
+    </p>
+
+    <h2>3. Uso responsável e consentimento</h2>
+    <p>
+      Você é responsável por gravar apenas onde tem direito de fazê-lo. Ao gravar aulas com
+      alunos, respeite a legislação aplicável (no Brasil, a <strong>LGPD</strong>): avise que
+      a aula está sendo gravada, tenha base legal e use os dados apenas para o fim comunicado.
+      Veja a <a href="/privacy">Política de Privacidade</a> para boas práticas.
+    </p>
+
+    <h2>4. Serviços de IA em nuvem (opcional)</h2>
+    <p>
+      A análise em nuvem é um recurso <strong>opt-in</strong>. Ao ativá-la, você usa a sua
+      própria conta e chave de API de um provedor terceiro (Anthropic, OpenAI, Google ou
+      OpenRouter), e o uso fica sujeito aos termos <em>desse</em> provedor. O AulaLogger não
+      intermedia, não armazena e não tem acesso ao conteúdo enviado — apenas o texto da
+      transcrição é transmitido diretamente do seu aparelho para o provedor que você escolheu.
+    </p>
+
+    <h2>5. Sem coleta de dados</h2>
+    <p>
+      O aplicativo não coleta dados pessoais, não tem telemetria e não se comunica com nenhum
+      servidor nosso (não temos servidor). Detalhes na <a href="/privacy">Política de Privacidade</a>.
+    </p>
+
+    <h2>6. Marca e atribuição</h2>
+    <p>
+      "AulaLogger" e sua identidade visual identificam o projeto. Forks e trabalhos derivados
+      são bem-vindos sob a GPL-3.0, mas evite causar confusão sugerindo afiliação ou endosso
+      oficial que não exista.
+    </p>
+
+    <h2>7. Mudanças nestes termos</h2>
+    <p>
+      Estes termos podem ser atualizados conforme o projeto evolui. A versão vigente é sempre
+      a publicada nesta página, com a data de atualização no topo.
+    </p>
+
+    <h2>Contato</h2>
+    <p>
+      Dúvidas? Abra uma
+      <a href="https://github.com/caioross/AulaLogger/issues" target="_blank" rel="noopener noreferrer">issue no GitHub</a>.
+    </p>
+
+    <p class="text-white/50 italic">
+      Este documento não constitui orientação jurídica. Em caso de dúvida sobre LGPD ou
+      direitos de imagem/voz, consulte um advogado.
+    </p>
+  </article>
+</Base>

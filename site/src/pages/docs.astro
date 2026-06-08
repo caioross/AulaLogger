@@ -1,0 +1,106 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const REPO = 'https://github.com/caioross/AulaLogger';
+const doc = (file: string) => `${REPO}/blob/main/docs/${file}`;
+
+const groups = [
+  {
+    title: 'Produto & visão',
+    icon: '🎯',
+    items: [
+      { label: 'Visão de produto e personas', href: doc('01-visao-produto.md'), desc: 'O problema, o público-alvo e os princípios.' },
+      { label: 'Arquitetura técnica', href: doc('02-arquitetura-tecnica.md'), desc: 'Visão geral dos subsistemas e decisões.' },
+      { label: 'Roadmap, riscos e decisões', href: doc('12-roadmap-riscos-decisoes-pendentes.md'), desc: 'O caminho da v1.0 à v1.3 e além.' },
+    ],
+  },
+  {
+    title: 'Engenharia',
+    icon: '⚙️',
+    items: [
+      { label: 'Subsistema de gravação', href: doc('03-subsistema-gravacao.md'), desc: 'Como gravar 4h+ sem perder um segundo.' },
+      { label: 'Pipeline de áudio', href: doc('04-pipeline-audio.md'), desc: 'Limpeza, normalização e VAD.' },
+      { label: 'Transcrição com Whisper', href: doc('05-transcricao-whisper.md'), desc: 'Whisper.cpp on-device, modelos e desempenho.' },
+      { label: 'Diarização', href: doc('06-diarizacao.md'), desc: 'Separar e identificar quem falou.' },
+      { label: 'IA de análise', href: doc('07-ia-analise.md'), desc: 'Análise pedagógica local e em nuvem.' },
+    ],
+  },
+  {
+    title: 'Plataforma',
+    icon: '🧱',
+    items: [
+      { label: 'UI / UX e fluxos', href: doc('08-ui-ux.md'), desc: 'Telas, design system e filosofia visual.' },
+      { label: 'Storage e exportação', href: doc('09-storage-exportacao.md'), desc: 'Persistência local e formatos de export.' },
+      { label: 'Site e landing page', href: doc('10-site-landing.md'), desc: 'Como este site foi pensado.' },
+      { label: 'Distribuição, CI/CD e open source', href: doc('11-distribuicao-cicd-open-source.md'), desc: 'APK, GitHub Releases, F-Droid.' },
+      { label: 'Segurança, testes e LGPD', href: doc('13-seguranca-testes-conformidade.md'), desc: 'Conformidade e qualidade.' },
+    ],
+  },
+];
+---
+
+<Base
+  title="Documentação — AulaLogger"
+  description="Documentação técnica do AulaLogger: arquitetura, gravação confiável, transcrição on-device com Whisper, diarização, análise com IA, distribuição e segurança."
+>
+  <section class="px-6 pt-16 pb-8">
+    <div class="mx-auto max-w-5xl">
+      <span class="eyebrow">Documentação</span>
+      <h1 class="mt-3 text-4xl font-bold tracking-tight md:text-5xl">Como o AulaLogger funciona por dentro</h1>
+      <p class="mt-5 max-w-2xl text-lg text-white/60">
+        O projeto é planejado em <strong class="text-white/90">14 documentos técnicos</strong> abertos.
+        Comece pela visão de produto, mergulhe na engenharia de gravação e transcrição,
+        ou vá direto para o guia de build.
+      </p>
+
+      <!-- Atalhos rápidos -->
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="https://github.com/caioross/AulaLogger/blob/main/PLANO_DE_DESENVOLVIMENTO.md" target="_blank" rel="noopener noreferrer" class="btn-primary !py-2.5 text-sm">📄 Plano de desenvolvimento</a>
+        <a href="https://github.com/caioross/AulaLogger/blob/main/BUILD.md" target="_blank" rel="noopener noreferrer" class="btn-secondary !py-2.5 text-sm">🔨 Guia de build</a>
+        <a href="https://github.com/caioross/AulaLogger/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="btn-secondary !py-2.5 text-sm">🤝 Contribuir</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-6 py-10">
+    <div class="mx-auto max-w-5xl space-y-12">
+      {
+        groups.map((g) => (
+          <div>
+            <h2 class="flex items-center gap-3 text-xl font-bold tracking-tight">
+              <span class="text-2xl">{g.icon}</span> {g.title}
+            </h2>
+            <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {g.items.map((it) => (
+                <a
+                  href={it.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="card !p-5"
+                >
+                  <h3 class="flex items-start justify-between gap-2 font-semibold text-white">
+                    {it.label}
+                    <svg class="h-4 w-4 flex-shrink-0 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+                  </h3>
+                  <p class="mt-2 text-sm leading-relaxed text-white/55">{it.desc}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="px-6 py-16">
+    <div class="mx-auto max-w-5xl rounded-3xl border border-white/[0.07] bg-white/[0.02] p-8 text-center md:p-12">
+      <h2 class="text-2xl font-bold tracking-tight md:text-3xl">Documentação interativa chegando</h2>
+      <p class="mx-auto mt-3 max-w-xl text-white/60">
+        Guias passo a passo (instalação, primeiros passos, troubleshooting de fabricantes
+        agressivos) serão publicados aqui conforme o app avança para a v1. Por ora, todo o
+        material técnico vive aberto no GitHub.
+      </p>
+      <a href="https://github.com/caioross/AulaLogger/tree/main/docs" target="_blank" rel="noopener noreferrer" class="btn-primary mt-7 inline-flex">Ver todos os docs no GitHub</a>
+    </div>
+  </section>
+</Base>

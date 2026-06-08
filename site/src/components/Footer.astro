@@ -1,47 +1,86 @@
 ---
 const year = new Date().getFullYear();
+
+const cols = [
+  {
+    title: 'Produto',
+    links: [
+      { href: '/download', label: 'Baixar', external: false },
+      { href: '/docs', label: 'Documentação', external: false },
+      { href: '/changelog', label: 'Changelog', external: false },
+    ],
+  },
+  {
+    title: 'Comunidade',
+    links: [
+      { href: 'https://github.com/caioross/AulaLogger', label: 'GitHub', external: true },
+      { href: 'https://github.com/caioross/AulaLogger/issues', label: 'Issues', external: true },
+      { href: 'https://github.com/caioross/AulaLogger/discussions', label: 'Discussions', external: true },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      { href: '/privacy', label: 'Privacidade', external: false },
+      { href: '/terms', label: 'Termos', external: false },
+      { href: 'https://github.com/caioross/AulaLogger/blob/main/SECURITY.md', label: 'Segurança', external: true },
+    ],
+  },
+];
 ---
 
-<footer class="border-t border-bg-card mt-24">
-  <div class="mx-auto max-w-6xl px-6 py-12">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
-      <div>
-        <h3 class="font-semibold text-white mb-3">Produto</h3>
-        <ul class="space-y-2 text-white/60">
-          <li><a href="/download" class="hover:text-accent transition">Baixar</a></li>
-          <li><a href="/docs" class="hover:text-accent transition">Documentação</a></li>
-          <li><a href="/changelog" class="hover:text-accent transition">Changelog</a></li>
-        </ul>
+<footer class="relative mt-24 border-t border-white/[0.06]">
+  <div class="mx-auto max-w-6xl px-6 py-14">
+    <div class="grid grid-cols-2 gap-10 md:grid-cols-5">
+      <!-- Marca -->
+      <div class="col-span-2">
+        <a href="/" class="flex items-center gap-2.5">
+          <span class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-accent to-violet shadow-glow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+            </svg>
+          </span>
+          <span class="text-lg font-bold tracking-tight">AulaLogger</span>
+        </a>
+        <p class="mt-4 max-w-xs text-sm leading-relaxed text-white/55">
+          Grave, transcreva e analise suas aulas — inteiro no seu celular, sem nuvem.
+          Feito com cuidado para quem dá muito de si em cada aula.
+        </p>
+        <div class="mt-5 flex flex-wrap gap-2">
+          <span class="badge !text-xs">🔒 Sem telemetria</span>
+          <span class="badge !text-xs">⚖️ GPL-3.0</span>
+        </div>
       </div>
-      <div>
-        <h3 class="font-semibold text-white mb-3">Comunidade</h3>
-        <ul class="space-y-2 text-white/60">
-          <li><a href="https://github.com/caioross/AulaLogger" class="hover:text-accent transition">GitHub</a></li>
-          <li><a href="https://github.com/caioross/AulaLogger/issues" class="hover:text-accent transition">Issues</a></li>
-          <li><a href="https://github.com/caioross/AulaLogger/discussions" class="hover:text-accent transition">Discussions</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="font-semibold text-white mb-3">Legal</h3>
-        <ul class="space-y-2 text-white/60">
-          <li><a href="/privacy" class="hover:text-accent transition">Privacidade</a></li>
-          <li><a href="/terms" class="hover:text-accent transition">Termos</a></li>
-          <li><a href="/security" class="hover:text-accent transition">Segurança</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="font-semibold text-white mb-3">Sobre</h3>
-        <ul class="space-y-2 text-white/60">
-          <li>Open source · GPL-3.0</li>
-          <li>Sem coleta de dados</li>
-          <li>Sem propaganda</li>
-        </ul>
-      </div>
+
+      {
+        cols.map((col) => (
+          <div>
+            <h3 class="mb-3 text-sm font-semibold text-white">{col.title}</h3>
+            <ul class="space-y-2.5 text-sm">
+              {col.links.map((l) => (
+                <li>
+                  <a
+                    href={l.href}
+                    class="text-white/55 transition hover:text-accent-soft"
+                    {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
     </div>
 
-    <div class="mt-12 pt-8 border-t border-bg-card flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs text-white/40">
-      <p>© {year} AulaLogger. Open source sob licença GPL-3.0.</p>
-      <p>Feito com cuidado para professores que dão muito de si.</p>
+    <div
+      class="mt-12 flex flex-col items-start justify-between gap-3 border-t border-white/[0.06] pt-8 text-xs text-white/40 md:flex-row md:items-center"
+    >
+      <p>© {year} AulaLogger · Open source sob licença GPL-3.0.</p>
+      <p>Seu áudio nunca sai do seu celular.</p>
     </div>
   </div>
 </footer>
