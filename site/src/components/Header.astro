@@ -1,4 +1,6 @@
 ---
+import Icon from '@/components/Icon.astro';
+
 const links = [
   { href: '/', label: 'Início' },
   { href: '/download', label: 'Baixar' },
@@ -18,22 +20,9 @@ const isActive = (href: string) =>
     <!-- Logo -->
     <a href="/" class="group flex items-center gap-2.5" aria-label="AulaLogger — início">
       <span
-        class="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-accent to-violet shadow-glow transition-transform group-hover:scale-105"
+        class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-accent to-violet shadow-glow transition-transform group-hover:scale-105"
       >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="white"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="h-5 w-5"
-          aria-hidden="true"
-        >
-          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-          <line x1="12" y1="19" x2="12" y2="23"></line>
-        </svg>
+        <Icon name="mic" class="h-5 w-5 text-white" />
       </span>
       <span class="text-lg font-bold tracking-tight">AulaLogger</span>
     </a>
@@ -62,36 +51,35 @@ const isActive = (href: string) =>
         class="flex items-center gap-1.5 text-sm text-white/60 transition hover:text-white"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Repositório no GitHub"
       >
-        <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
-          <path
-            d="M12 .5C5.37.5 0 5.78 0 12.29c0 5.21 3.44 9.63 8.2 11.19.6.11.82-.25.82-.57v-2c-3.34.71-4.04-1.6-4.04-1.6-.55-1.36-1.33-1.72-1.33-1.72-1.09-.73.08-.72.08-.72 1.2.08 1.84 1.21 1.84 1.21 1.07 1.8 2.8 1.28 3.49.98.11-.76.42-1.28.76-1.58-2.67-.3-5.47-1.31-5.47-5.83 0-1.29.47-2.34 1.24-3.17-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.21a11.6 11.6 0 0 1 6 0c2.29-1.53 3.3-1.21 3.3-1.21.66 1.65.25 2.87.12 3.17.77.83 1.23 1.88 1.23 3.17 0 4.53-2.81 5.52-5.49 5.81.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.57A12.01 12.01 0 0 0 24 12.29C24 5.78 18.63.5 12 .5z"
-          ></path>
-        </svg>
+        <Icon name="github" class="h-[18px] w-[18px]" />
         GitHub
       </a>
       <a href="/download" class="btn-primary !px-5 !py-2 text-sm">Baixar</a>
     </nav>
 
-    <!-- Toggle mobile (CSS puro, sem JS) -->
-    <input type="checkbox" id="nav-toggle" class="peer hidden" aria-hidden="true" />
-    <label
-      for="nav-toggle"
-      class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-white/10 text-white/80 md:hidden"
+    <!-- Botão menu mobile -->
+    <button
+      id="menu-btn"
+      type="button"
+      class="menu-btn flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-white/80 transition hover:bg-white/5 md:hidden"
       aria-label="Abrir menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
     >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5">
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </label>
+      <span class="icon-open"><Icon name="menu" class="h-5 w-5" /></span>
+      <span class="icon-close"><Icon name="x" class="h-5 w-5" /></span>
+    </button>
+  </div>
 
-    <!-- Painel mobile -->
-    <nav
-      class="absolute left-0 top-full hidden w-full flex-col gap-1 border-b border-white/[0.06] bg-bg-primary/95 px-6 pb-6 pt-2 backdrop-blur-xl peer-checked:flex md:hidden"
-      aria-label="Navegação mobile"
-    >
+  <!-- Painel mobile -->
+  <nav
+    id="mobile-menu"
+    class="mobile-menu absolute left-0 top-full w-full overflow-hidden border-b border-white/[0.06] bg-bg-primary/95 backdrop-blur-xl md:hidden"
+    aria-label="Navegação mobile"
+  >
+    <div class="flex flex-col gap-1 px-6 pb-6 pt-2">
       {
         links.map((l) => (
           <a
@@ -107,13 +95,40 @@ const isActive = (href: string) =>
       }
       <a
         href="https://github.com/caioross/AulaLogger"
-        class="rounded-lg px-3 py-3 text-base text-white/70 transition hover:bg-white/5"
+        class="flex items-center gap-2 rounded-lg px-3 py-3 text-base text-white/70 transition hover:bg-white/5"
         target="_blank"
         rel="noopener noreferrer"
       >
-        GitHub
+        <Icon name="github" class="h-[18px] w-[18px]" /> GitHub
       </a>
       <a href="/download" class="btn-primary mt-2 w-full">Baixar para Android</a>
-    </nav>
-  </div>
+    </div>
+  </nav>
 </header>
+
+<script>
+  const btn = document.getElementById('menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  if (btn && menu) {
+    const setOpen = (state: boolean) => {
+      btn.setAttribute('aria-expanded', String(state));
+      btn.setAttribute('aria-label', state ? 'Fechar menu' : 'Abrir menu');
+      btn.classList.toggle('is-open', state);
+      menu.classList.toggle('is-open', state);
+    };
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setOpen(btn.getAttribute('aria-expanded') !== 'true');
+    });
+    menu.querySelectorAll('a').forEach((a) =>
+      a.addEventListener('click', () => setOpen(false)),
+    );
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+    document.addEventListener('click', (e) => {
+      const t = e.target as Node;
+      if (!menu.contains(t) && !btn.contains(t)) setOpen(false);
+    });
+  }
+</script>

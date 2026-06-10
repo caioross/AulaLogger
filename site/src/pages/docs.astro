@@ -1,5 +1,6 @@
 ---
 import Base from '@/layouts/Base.astro';
+import Icon from '@/components/Icon.astro';
 
 const REPO = 'https://github.com/caioross/AulaLogger';
 const doc = (file: string) => `${REPO}/blob/main/docs/${file}`;
@@ -7,7 +8,7 @@ const doc = (file: string) => `${REPO}/blob/main/docs/${file}`;
 const groups = [
   {
     title: 'Produto & visão',
-    icon: '🎯',
+    icon: 'target',
     items: [
       { label: 'Visão de produto e personas', href: doc('01-visao-produto.md'), desc: 'O problema, o público-alvo e os princípios.' },
       { label: 'Arquitetura técnica', href: doc('02-arquitetura-tecnica.md'), desc: 'Visão geral dos subsistemas e decisões.' },
@@ -16,7 +17,7 @@ const groups = [
   },
   {
     title: 'Engenharia',
-    icon: '⚙️',
+    icon: 'settings',
     items: [
       { label: 'Subsistema de gravação', href: doc('03-subsistema-gravacao.md'), desc: 'Como gravar 4h+ sem perder um segundo.' },
       { label: 'Pipeline de áudio', href: doc('04-pipeline-audio.md'), desc: 'Limpeza, normalização e VAD.' },
@@ -27,7 +28,7 @@ const groups = [
   },
   {
     title: 'Plataforma',
-    icon: '🧱',
+    icon: 'layers',
     items: [
       { label: 'UI / UX e fluxos', href: doc('08-ui-ux.md'), desc: 'Telas, design system e filosofia visual.' },
       { label: 'Storage e exportação', href: doc('09-storage-exportacao.md'), desc: 'Persistência local e formatos de export.' },
@@ -55,9 +56,9 @@ const groups = [
 
       <!-- Atalhos rápidos -->
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href="https://github.com/caioross/AulaLogger/blob/main/PLANO_DE_DESENVOLVIMENTO.md" target="_blank" rel="noopener noreferrer" class="btn-primary !py-2.5 text-sm">📄 Plano de desenvolvimento</a>
-        <a href="https://github.com/caioross/AulaLogger/blob/main/BUILD.md" target="_blank" rel="noopener noreferrer" class="btn-secondary !py-2.5 text-sm">🔨 Guia de build</a>
-        <a href="https://github.com/caioross/AulaLogger/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="btn-secondary !py-2.5 text-sm">🤝 Contribuir</a>
+        <a href="https://github.com/caioross/AulaLogger/blob/main/PLANO_DE_DESENVOLVIMENTO.md" target="_blank" rel="noopener noreferrer" class="btn-primary !py-2.5 text-sm"><Icon name="file-text" class="h-4 w-4" /> Plano de desenvolvimento</a>
+        <a href="https://github.com/caioross/AulaLogger/blob/main/BUILD.md" target="_blank" rel="noopener noreferrer" class="btn-secondary !py-2.5 text-sm"><Icon name="hammer" class="h-4 w-4" /> Guia de build</a>
+        <a href="https://github.com/caioross/AulaLogger/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="btn-secondary !py-2.5 text-sm"><Icon name="heart" class="h-4 w-4" /> Contribuir</a>
       </div>
     </div>
   </section>
@@ -68,7 +69,10 @@ const groups = [
         groups.map((g) => (
           <div>
             <h2 class="flex items-center gap-3 text-xl font-bold tracking-tight">
-              <span class="text-2xl">{g.icon}</span> {g.title}
+              <span class="grid h-10 w-10 place-items-center rounded-xl bg-accent/10 text-accent-soft">
+                <Icon name={g.icon} class="h-5 w-5" />
+              </span>
+              {g.title}
             </h2>
             <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {g.items.map((it) => (

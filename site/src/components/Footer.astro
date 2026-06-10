@@ -1,4 +1,5 @@
 ---
+import Icon from '@/components/Icon.astro';
 const year = new Date().getFullYear();
 
 const cols = [
@@ -36,11 +37,7 @@ const cols = [
       <div class="col-span-2">
         <a href="/" class="flex items-center gap-2.5">
           <span class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-accent to-violet shadow-glow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true">
-              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-              <line x1="12" y1="19" x2="12" y2="23"></line>
-            </svg>
+            <Icon name="mic" class="h-5 w-5 text-white" />
           </span>
           <span class="text-lg font-bold tracking-tight">AulaLogger</span>
         </a>
@@ -49,8 +46,8 @@ const cols = [
           Feito com cuidado para quem dá muito de si em cada aula.
         </p>
         <div class="mt-5 flex flex-wrap gap-2">
-          <span class="badge !text-xs">🔒 Sem telemetria</span>
-          <span class="badge !text-xs">⚖️ GPL-3.0</span>
+          <span class="badge !text-xs"><Icon name="lock" class="h-3.5 w-3.5 text-success" /> Sem telemetria</span>
+          <span class="badge !text-xs"><Icon name="scale" class="h-3.5 w-3.5 text-accent-soft" /> GPL-3.0</span>
         </div>
       </div>
 

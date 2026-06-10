@@ -138,18 +138,24 @@
   }
 }
 
-/* ─────────────── Scroll reveal (progressivo, sem JS) ───────────────
-   Por padrão o conteúdo é visível. Onde houver suporte a animações de
-   timeline e o usuário não pediu movimento reduzido, os elementos
-   sobem suavemente ao entrar na viewport. */
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .reveal {
-      animation: reveal-up linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 22%;
-    }
-  }
+/* ─────────────── Scroll reveal (IntersectionObserver, progressivo) ───────────────
+   O conteúdo é visível por padrão. Só quando o JS marca <html> com a
+   classe `reveal-ready` (e o usuário não pediu menos movimento) os
+   elementos começam ocultos e sobem suavemente ao entrar na viewport.
+   Sem JS ou com movimento reduzido → tudo visível, nada quebra. */
+.reveal {
+  transition:
+    opacity 0.6s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html.reveal-ready .reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  will-change: opacity, transform;
+}
+html.reveal-ready .reveal.is-visible {
+  opacity: 1;
+  transform: none;
 }
 
 @keyframes reveal-up {
@@ -161,6 +167,30 @@
     opacity: 1;
     transform: none;
   }
+}
+
+/* ─────────────── Menu mobile (animado, acessível) ─────────────── */
+.mobile-menu {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.25s ease;
+}
+.mobile-menu.is-open {
+  max-height: 26rem;
+  opacity: 1;
+  pointer-events: auto;
+}
+.menu-btn .icon-close {
+  display: none;
+}
+.menu-btn.is-open .icon-open {
+  display: none;
+}
+.menu-btn.is-open .icon-close {
+  display: block;
 }
 
 /* Animação de entrada do hero (no load) — guardada por motion preference */
@@ -194,9 +224,23 @@
   0%, 100% { height: 16%; opacity: 0.55; }
   50% { height: 100%; opacity: 1; }
 }
+/* Acessibilidade: respeita "menos movimento" desligando todas as
+   animações/transições contínuas (waveform, float, pulse, reveal…). */
 @media (prefers-reduced-motion: reduce) {
-  .waveform span { animation: none; height: 45%; }
-  .animate-in { opacity: 1; animation: none; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .waveform span {
+    height: 45%;
+  }
+  .animate-in {
+    opacity: 1;
+  }
 }
 
 /* ─────────────── Prose (changelog / privacidade / docs) ─────────────── */

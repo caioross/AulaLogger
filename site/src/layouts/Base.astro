@@ -104,6 +104,18 @@ const jsonLd = [...baseGraph, ...extra];
 
     <!-- Dados estruturados -->
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Habilita o scroll-reveal só com suporte e movimento permitido (antes da pintura) -->
+    <script is:inline>
+      (function () {
+        try {
+          var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!reduce && 'IntersectionObserver' in window) {
+            document.documentElement.classList.add('reveal-ready');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body class="flex min-h-screen flex-col">
     <a
@@ -117,5 +129,30 @@ const jsonLd = [...baseGraph, ...extra];
       <slot />
     </main>
     <Footer />
+
+    <script>
+      const els = document.querySelectorAll('.reveal');
+      if (els.length) {
+        if (
+          'IntersectionObserver' in window &&
+          document.documentElement.classList.contains('reveal-ready')
+        ) {
+          const io = new IntersectionObserver(
+            (entries) => {
+              for (const e of entries) {
+                if (e.isIntersecting) {
+                  e.target.classList.add('is-visible');
+                  io.unobserve(e.target);
+                }
+              }
+            },
+            { rootMargin: '0px 0px -8% 0px', threshold: 0.06 },
+          );
+          els.forEach((el) => io.observe(el));
+        } else {
+          els.forEach((el) => el.classList.add('is-visible'));
+        }
+      }
+    </script>
   </body>
 </html>

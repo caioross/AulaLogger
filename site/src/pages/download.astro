@@ -1,5 +1,6 @@
 ---
 import Base from '@/layouts/Base.astro';
+import Icon from '@/components/Icon.astro';
 
 // Distribuição via GitHub Releases (resolve o limite de 25 MB do Cloudflare Pages).
 const REPO = 'caioross/AulaLogger';
@@ -57,10 +58,10 @@ const releaseDate = rel.date ?? '—';
 const apkSize = rel.apkSize ?? '~52 MB';
 
 const requirements = [
-  { icon: '🤖', label: 'Android 10+', sub: 'API 29 ou superior' },
-  { icon: '🧠', label: '4 GB de RAM', sub: 'recomendado p/ IA local' },
-  { icon: '🎙️', label: 'Microfone', sub: 'permissão obrigatória' },
-  { icon: '💾', label: '~2 GB livres', sub: 'por aula de 4h (WAV)' },
+  { icon: 'smartphone', label: 'Android 10+', sub: 'API 29 ou superior' },
+  { icon: 'cpu', label: '4 GB de RAM', sub: 'recomendado p/ transcrição' },
+  { icon: 'mic', label: 'Microfone', sub: 'permissão obrigatória' },
+  { icon: 'hard-drive', label: '~2 GB livres', sub: 'por aula de 4h (WAV)' },
 ];
 
 const steps = [
@@ -106,7 +107,7 @@ const steps = [
               {latestVersion} · {releaseDate} · {apkSize}
             </p>
           </div>
-          <span class="badge">📦 APK assinado</span>
+          <span class="badge"><Icon name="package" class="h-4 w-4 text-accent-soft" /> APK assinado</span>
         </div>
         <p class="mt-5 max-w-lg text-white/70">
           Publicado no GitHub Releases, com checksum SHA-256 para você verificar a integridade.
@@ -138,8 +139,10 @@ const steps = [
         {
           requirements.map((r) => (
             <div class="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 text-center">
-              <div class="text-2xl">{r.icon}</div>
-              <div class="mt-2 text-sm font-semibold text-white">{r.label}</div>
+              <div class="mx-auto grid h-10 w-10 place-items-center rounded-xl bg-accent/10 text-accent-soft">
+                <Icon name={r.icon} class="h-5 w-5" />
+              </div>
+              <div class="mt-2.5 text-sm font-semibold text-white">{r.label}</div>
               <div class="text-xs text-white/45">{r.sub}</div>
             </div>
           ))
@@ -159,7 +162,7 @@ const steps = [
           rel="noopener noreferrer"
           class="card flex items-start gap-4 !p-5"
         >
-          <span class="text-2xl">🐙</span>
+          <span class="grid h-10 w-10 flex-shrink-0 place-items-center rounded-xl bg-white/[0.05] text-white"><Icon name="github" class="h-5 w-5" /></span>
           <div>
             <h3 class="font-semibold">GitHub Releases</h3>
             <p class="mt-1 text-sm text-white/55">
@@ -168,7 +171,7 @@ const steps = [
           </div>
         </a>
         <div class="flex items-start gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 opacity-60">
-          <span class="text-2xl">📦</span>
+          <span class="grid h-10 w-10 flex-shrink-0 place-items-center rounded-xl bg-white/[0.05] text-white"><Icon name="package" class="h-5 w-5" /></span>
           <div>
             <h3 class="font-semibold">F-Droid</h3>
             <p class="mt-1 text-sm text-white/55">
@@ -198,9 +201,10 @@ const steps = [
         }
       </ol>
 
-      <div class="mt-8 rounded-2xl border border-warning/30 bg-warning/[0.06] p-6">
+      <div class="mt-8 flex gap-4 rounded-2xl border border-warning/30 bg-warning/[0.06] p-6">
+        <Icon name="alert-triangle" class="mt-0.5 h-5 w-5 flex-shrink-0 text-warning" />
         <p class="text-sm text-white/80">
-          <strong class="text-warning">⚠️ Permissões importantes:</strong> na primeira abertura,
+          <strong class="text-warning">Permissões importantes:</strong> na primeira abertura,
           autorize <strong>microfone</strong>, <strong>notificações</strong> e
           <strong>ignorar otimização de bateria</strong>. Sem isso, alguns fabricantes
           (Xiaomi, Samsung, Huawei) podem interromper gravações longas em segundo plano.
