@@ -1,13 +1,22 @@
 cmake_minimum_required(VERSION 3.22.1)
 project("whisperjni")
 
+# 16 KB page size — OBRIGATÓRIO para Android 15+ na Google Play (apps com código
+# nativo targetando API 35 submetidos após 01/11/2025). Alinha os segmentos LOAD
+# do .so em 16 KB para rodar nos novos aparelhos de 16 KB. Combinado com NDK r26+
+# e useLegacyPackaging=false (libs descomprimidas/alinhadas no APK/AAB).
+add_link_options("-Wl,-z,max-page-size=16384" "-Wl,-z,common-page-size=16384")
+
 # Configuração do whisper.cpp
 set(WHISPER_BUILD_TESTS    OFF CACHE BOOL "" FORCE)
 set(WHISPER_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(WHISPER_BUILD_SERVER   OFF CACHE BOOL "" FORCE)
-# OpenMP traz ganho significativo nas multiplicações de matriz (~20-40%).
-# NDK r25 inclui libomp para Android.
-set(GGML_OPENMP            ON  CACHE BOOL "" FORCE)
+# OpenMP DESLIGADO de propósito: o libomp.so do NDK vem alinhado em 4 KB e
+# quebraria a exigência de 16 KB do Android 15 na Google Play. Sem ele, o ggml
+# usa seu próprio threadpool (pthreads) — continua multi-thread via n_threads.
+# Para reativar OpenMP mantendo 16 KB: instale o NDK r27+ (libomp.so dele já é
+# 16 KB), troque ndkVersion no build.gradle.kts e volte para ON.
+set(GGML_OPENMP            OFF CACHE BOOL "" FORCE)
 set(BUILD_SHARED_LIBS      OFF CACHE BOOL "" FORCE)
 
 # Otimizações ARM (sem -ffast-math: ggml exige non-finite math)

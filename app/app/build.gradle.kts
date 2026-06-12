@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -5,15 +8,27 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
 }
 
+// Assinatura de release. Lê app/keystore.properties (NUNCA versionado — ver
+// .gitignore). Sem o arquivo, o build de release cai no debug, permitindo
+// compilar localmente sem segredos. Para publicar na Play Store, gere a chave
+// (ver RELEASE-PLAYSTORE.md) e crie o keystore.properties.
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) {
+        FileInputStream(keystorePropertiesFile).use { load(it) }
+    }
+}
+val hasReleaseKeystore = keystorePropertiesFile.exists()
+
 android {
     namespace = "com.aulalogger"
     compileSdk = 35
-    ndkVersion = "25.1.8937393"
+    ndkVersion = "26.1.10909125"
 
     defaultConfig {
         applicationId = "com.aulalogger"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 11
         versionName = "0.7.4"
 
@@ -21,7 +36,11 @@ android {
             cmake {
                 cppFlags += listOf("-std=c++17", "-O3", "-fno-finite-math-only")
                 arguments += listOf(
-                    "-DANDROID_STL=c++_shared",
+                    // c++_static: como só há UMA lib nativa compartilhada
+                    // (libwhisperjni.so), o STL é embutido nela e não geramos
+                    // libc++_shared.so — que viria 4 KB do NDK e quebraria a
+                    // exigência de 16 KB do Android 15 na Play Store.
+                    "-DANDROID_STL=c++_static",
                     "-DCMAKE_BUILD_TYPE=Release"
                 )
                 abiFilters += listOf("arm64-v8a", "armeabi-v7a")
@@ -40,6 +59,20 @@ android {
         }
     }
 
+    signingConfigs {
+        // Chave de upload para a Play Store (Play App Signing recomendado).
+        if (hasReleaseKeystore) {
+            create("release") {
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+                enableV1Signing = true
+                enableV2Signing = true
+            }
+        }
+    }
+
     buildTypes {
         release {
             // ARCH-009: ProGuard habilitado em release. Reduz APK ~5 MB e
@@ -47,10 +80,13 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            // ARCH-010: para distribuição pública, gerar keystore real e
-            // configurar via gradle.properties. Por ora, debug-signed para
-            // permitir teste local.
-            signingConfig = signingConfigs.getByName("debug")
+            // Assina com a chave de upload se houver keystore.properties;
+            // senão, debug-signed (apenas para teste local — NÃO publicável).
+            signingConfig = if (hasReleaseKeystore) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
         debug {
             isDebuggable = true
