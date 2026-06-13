@@ -56,7 +56,7 @@ jobs:
         run: ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: aulalogger-debug-${{ github.sha }}
           path: app/android/app/build/outputs/apk/debug/*.apk
