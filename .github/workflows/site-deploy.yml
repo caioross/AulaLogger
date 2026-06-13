@@ -34,7 +34,9 @@ jobs:
 
       - name: Build
         working-directory: site
-        run: npm run build
+        # Remove os APKs legados de public/apk do output: a distribuição é via
+        # GitHub Releases e arquivos >25 MB estouram o limite do Cloudflare Pages.
+        run: npm run build && rm -rf dist/apk
 
       - name: Deploy to Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != ''
